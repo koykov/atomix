@@ -1,6 +1,10 @@
 package pbvector
 
 type pbtyp struct {
+	fields []pbfield
+}
+
+type pbfield struct {
 	wire   wire
 	num    uint
 	opt    bool
@@ -10,6 +14,15 @@ type pbtyp struct {
 }
 
 type wire uint8
+
+const (
+	wireVarint     wire = 0
+	wireFixed32    wire = 5
+	wireFixed64    wire = 1
+	wireBytes      wire = 2
+	wireStartGroup wire = 3
+	wireEndGroup   wire = 4
+)
 
 type ver uint8
 
