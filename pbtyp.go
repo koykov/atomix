@@ -1,6 +1,9 @@
 package pbvector
 
-import "reflect"
+import (
+	"reflect"
+	"regexp"
+)
 
 type pbtyp struct {
 	fields []pbfield
@@ -43,11 +46,25 @@ func parseType(x any) (r pbtyp) {
 		if !ok {
 			continue
 		}
-		_ = tag // todo parse me
+		m := reParseTag.FindStringSubmatch(tag)
+		if len(m) != 4 {
+			continue
+		}
+
+		var w wire
+		switch m[1] {
+		case "varint":
+			w = wireVarint
+		case "bytes":
+			w = wireBytes
+
+			// ...
+		}
 
 		vf := v.Field(i)
 		fv := pbfield{
 			goname: tf.Name,
+			wire:   w,
 		}
 		if tf.Type.Kind() == reflect.Struct {
 			c := parseType(vf.Interface())
@@ -56,3 +73,5 @@ func parseType(x any) (r pbtyp) {
 	}
 	return
 }
+
+var reParseTag = regexp.MustCompile(`protobuf:"([^,]+),(\d+),opt,name=([^,]+),proto(\d+)"`)
