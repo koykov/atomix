@@ -57,7 +57,10 @@ func parseType(x any) (r pbtyp) {
 			w = wireVarint
 		case "bytes":
 			w = wireBytes
-
+		case "fixed32":
+			w = wireFixed32
+		case "fixed64":
+			w = wireFixed64
 			// ...
 		}
 
