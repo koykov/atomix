@@ -1,5 +1,3 @@
-module github.com/koykov/pbvector
+module github.com/koykov/atomix
 
-go 1.23
-
-require google.golang.org/protobuf v1.36.12
+go 1.22
