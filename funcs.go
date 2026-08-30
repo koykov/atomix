@@ -87,9 +87,22 @@ func OrUintptr(addr *uintptr, mask uintptr, order MemoryOrder) (old uintptr) {
 	return
 }
 
-func LoadInt32(addr *int32, order MemoryOrder) (val int32) {
-	// todo implement me
-	return
+func LoadInt32(addr *int32, order MemoryOrder) int32 {
+	switch order {
+	case MemoryOrderRelaxed:
+		return LoadInt32Relaxed(addr)
+	case MemoryOrderAcquire:
+		// ...
+	case MemoryOrderRelease:
+		// ...
+	case MemoryOrderAcqRel:
+		// ...
+	case MemoryOrderSeqCnt:
+		fallthrough
+	default:
+		// ...
+	}
+	return 0
 }
 
 func LoadUint32(addr *uint32, order MemoryOrder) (val uint32) {
