@@ -5,8 +5,8 @@ type MemoryOrder uint8
 const (
 	MemoryOrderRelaxed MemoryOrder = iota
 	MemoryOrderAcquire
-	MemoryOrderConsume // deprecated, fallthrough to MemoryOrderSeqCnt
+	MemoryOrderConsume // deprecated, fallthrough to MemoryOrderSeqCst
 	MemoryOrderRelease
 	MemoryOrderAcqRel
-	MemoryOrderSeqCnt
+	MemoryOrderSeqCst
 )

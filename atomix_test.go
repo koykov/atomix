@@ -19,7 +19,7 @@ func TestAtomix(t *testing.T) {
 				x.before = magic32
 				x.after = magic32
 				for delta := int32(1); delta+delta > delta; delta += delta {
-					k := LoadInt32(&x.i, MemoryOrderRelaxed)
+					k, _ := LoadInt32(&x.i, MemoryOrderRelaxed)
 					if k != x.i {
 						t.Fatalf("delta=%d i=%d k=%d", delta, x.i, k)
 					}

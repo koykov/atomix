@@ -87,22 +87,21 @@ func OrUintptr(addr *uintptr, mask uintptr, order MemoryOrder) (old uintptr) {
 	return
 }
 
-func LoadInt32(addr *int32, order MemoryOrder) int32 {
+func LoadInt32(addr *int32, order MemoryOrder) (int32, error) {
 	switch order {
 	case MemoryOrderRelaxed:
-		return LoadInt32Relaxed(addr)
+		return LoadInt32Relaxed(addr), nil
 	case MemoryOrderAcquire:
-		// ...
+		return LoadInt32Acquire(addr), nil
 	case MemoryOrderRelease:
-		// ...
+		return 0, ErrUnsupportedOrder
 	case MemoryOrderAcqRel:
-		// ...
-	case MemoryOrderSeqCnt:
+		return 0, ErrUnsupportedOrder
+	case MemoryOrderSeqCst:
 		fallthrough
 	default:
-		// ...
+		return LoadInt32SeqCst(addr), nil
 	}
-	return 0
 }
 
 func LoadUint32(addr *uint32, order MemoryOrder) (val uint32) {
