@@ -11,96 +11,96 @@ import "unsafe"
 //go:noescape
 //go:nosplit
 //go:noinline
-func LoadInt32Relaxed(addr *int32) int32
+func loadInt32Relaxed(addr *int32) int32
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func LoadUint32Relaxed(addr *uint32) uint32
+func loadUint32Relaxed(addr *uint32) uint32
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func LoadInt64Relaxed(addr *int64) int64
+func loadInt64Relaxed(addr *int64) int64
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func LoadUint64Relaxed(addr *uint64) uint64
+func loadUint64Relaxed(addr *uint64) uint64
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func LoadUintptrRelaxed(addr *uintptr) uintptr
+func loadUintptrRelaxed(addr *uintptr) uintptr
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func LoadPointerRelaxed(addr *unsafe.Pointer) unsafe.Pointer
+func loadPointerRelaxed(addr *unsafe.Pointer) unsafe.Pointer
 
 // Acquire
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func LoadInt32Acquire(addr *int32) int32
+func loadInt32Acquire(addr *int32) int32
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func LoadUint32Acquire(addr *uint32) uint32
+func loadUint32Acquire(addr *uint32) uint32
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func LoadInt64Acquire(addr *int64) int64
+func loadInt64Acquire(addr *int64) int64
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func LoadUint64Acquire(addr *uint64) uint64
+func loadUint64Acquire(addr *uint64) uint64
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func LoadUintptrAcquire(addr *uintptr) uintptr
+func loadUintptrAcquire(addr *uintptr) uintptr
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func LoadPointerAcquire(addr *unsafe.Pointer) unsafe.Pointer
+func loadPointerAcquire(addr *unsafe.Pointer) unsafe.Pointer
 
 // SeqCst
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func LoadInt32SeqCst(addr *int32) int32
+func loadInt32SeqCst(addr *int32) int32
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func LoadUint32SeqCst(addr *uint32) uint32
+func loadUint32SeqCst(addr *uint32) uint32
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func LoadInt64SeqCst(addr *int64) int64
+func loadInt64SeqCst(addr *int64) int64
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func LoadUint64SeqCst(addr *uint64) uint64
+func loadUint64SeqCst(addr *uint64) uint64
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func LoadUintptrSeqCst(addr *uintptr) uintptr
+func loadUintptrSeqCst(addr *uintptr) uintptr
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func LoadPointerSeqCst(addr *unsafe.Pointer) unsafe.Pointer
+func loadPointerSeqCst(addr *unsafe.Pointer) unsafe.Pointer
 
 // ============================================================
 // STORE operations (Relaxed, Release, SeqCst)
@@ -111,81 +111,81 @@ func LoadPointerSeqCst(addr *unsafe.Pointer) unsafe.Pointer
 //go:noescape
 //go:nosplit
 //go:noinline
-func StoreInt32Relaxed(addr *int32, val int32)
+func storeInt32Relaxed(addr *int32, val int32)
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func StoreUint32Relaxed(addr *uint32, val uint32)
+func storeUint32Relaxed(addr *uint32, val uint32)
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func StoreInt64Relaxed(addr *int64, val int64)
+func storeInt64Relaxed(addr *int64, val int64)
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func StoreUint64Relaxed(addr *uint64, val uint64)
+func storeUint64Relaxed(addr *uint64, val uint64)
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func StoreUintptrRelaxed(addr *uintptr, val uintptr)
+func storeUintptrRelaxed(addr *uintptr, val uintptr)
 
 // Release
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func StoreInt32Release(addr *int32, val int32)
+func storeInt32Release(addr *int32, val int32)
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func StoreUint32Release(addr *uint32, val uint32)
+func storeUint32Release(addr *uint32, val uint32)
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func StoreInt64Release(addr *int64, val int64)
+func storeInt64Release(addr *int64, val int64)
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func StoreUint64Release(addr *uint64, val uint64)
+func storeUint64Release(addr *uint64, val uint64)
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func StoreUintptrRelease(addr *uintptr, val uintptr)
+func storeUintptrRelease(addr *uintptr, val uintptr)
 
 // SeqCst
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func StoreInt32SeqCst(addr *int32, val int32)
+func storeInt32SeqCst(addr *int32, val int32)
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func StoreUint32SeqCst(addr *uint32, val uint32)
+func storeUint32SeqCst(addr *uint32, val uint32)
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func StoreInt64SeqCst(addr *int64, val int64)
+func storeInt64SeqCst(addr *int64, val int64)
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func StoreUint64SeqCst(addr *uint64, val uint64)
+func storeUint64SeqCst(addr *uint64, val uint64)
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func StoreUintptrSeqCst(addr *uintptr, val uintptr)
+func storeUintptrSeqCst(addr *uintptr, val uintptr)
 
 // ============================================================
 // CAS operations (Relaxed, Acquire, Release, AcqRel, SeqCst)
@@ -196,135 +196,135 @@ func StoreUintptrSeqCst(addr *uintptr, val uintptr)
 //go:noescape
 //go:nosplit
 //go:noinline
-func CasInt32Relaxed(addr *int32, old, new int32) bool
+func casInt32Relaxed(addr *int32, old, new int32) bool
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func CasUint32Relaxed(addr *uint32, old, new uint32) bool
+func casUint32Relaxed(addr *uint32, old, new uint32) bool
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func CasInt64Relaxed(addr *int64, old, new int64) bool
+func casInt64Relaxed(addr *int64, old, new int64) bool
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func CasUint64Relaxed(addr *uint64, old, new uint64) bool
+func casUint64Relaxed(addr *uint64, old, new uint64) bool
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func CasUintptrRelaxed(addr *uintptr, old, new uintptr) bool
+func casUintptrRelaxed(addr *uintptr, old, new uintptr) bool
 
 // Acquire
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func CasInt32Acquire(addr *int32, old, new int32) bool
+func casInt32Acquire(addr *int32, old, new int32) bool
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func CasUint32Acquire(addr *uint32, old, new uint32) bool
+func casUint32Acquire(addr *uint32, old, new uint32) bool
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func CasInt64Acquire(addr *int64, old, new int64) bool
+func casInt64Acquire(addr *int64, old, new int64) bool
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func CasUint64Acquire(addr *uint64, old, new uint64) bool
+func casUint64Acquire(addr *uint64, old, new uint64) bool
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func CasUintptrAcquire(addr *uintptr, old, new uintptr) bool
+func casUintptrAcquire(addr *uintptr, old, new uintptr) bool
 
 // Release
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func CasInt32Release(addr *int32, old, new int32) bool
+func casInt32Release(addr *int32, old, new int32) bool
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func CasUint32Release(addr *uint32, old, new uint32) bool
+func casUint32Release(addr *uint32, old, new uint32) bool
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func CasInt64Release(addr *int64, old, new int64) bool
+func casInt64Release(addr *int64, old, new int64) bool
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func CasUint64Release(addr *uint64, old, new uint64) bool
+func casUint64Release(addr *uint64, old, new uint64) bool
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func CasUintptrRelease(addr *uintptr, old, new uintptr) bool
+func casUintptrRelease(addr *uintptr, old, new uintptr) bool
 
 // AcqRel
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func CasInt32AcqRel(addr *int32, old, new int32) bool
+func casInt32AcqRel(addr *int32, old, new int32) bool
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func CasUint32AcqRel(addr *uint32, old, new uint32) bool
+func casUint32AcqRel(addr *uint32, old, new uint32) bool
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func CasInt64AcqRel(addr *int64, old, new int64) bool
+func casInt64AcqRel(addr *int64, old, new int64) bool
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func CasUint64AcqRel(addr *uint64, old, new uint64) bool
+func casUint64AcqRel(addr *uint64, old, new uint64) bool
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func CasUintptrAcqRel(addr *uintptr, old, new uintptr) bool
+func casUintptrAcqRel(addr *uintptr, old, new uintptr) bool
 
 // SeqCst
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func CasInt32SeqCst(addr *int32, old, new int32) bool
+func casInt32SeqCst(addr *int32, old, new int32) bool
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func CasUint32SeqCst(addr *uint32, old, new uint32) bool
+func casUint32SeqCst(addr *uint32, old, new uint32) bool
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func CasInt64SeqCst(addr *int64, old, new int64) bool
+func casInt64SeqCst(addr *int64, old, new int64) bool
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func CasUint64SeqCst(addr *uint64, old, new uint64) bool
+func casUint64SeqCst(addr *uint64, old, new uint64) bool
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func CasUintptrSeqCst(addr *uintptr, old, new uintptr) bool
+func casUintptrSeqCst(addr *uintptr, old, new uintptr) bool
 
 // ============================================================
 // ADD operations (Relaxed, Acquire, Release, AcqRel, SeqCst)
@@ -335,135 +335,135 @@ func CasUintptrSeqCst(addr *uintptr, old, new uintptr) bool
 //go:noescape
 //go:nosplit
 //go:noinline
-func AddInt32Relaxed(addr *int32, delta int32) int32
+func addInt32Relaxed(addr *int32, delta int32) int32
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func AddUint32Relaxed(addr *uint32, delta uint32) uint32
+func addUint32Relaxed(addr *uint32, delta uint32) uint32
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func AddInt64Relaxed(addr *int64, delta int64) int64
+func addInt64Relaxed(addr *int64, delta int64) int64
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func AddUint64Relaxed(addr *uint64, delta uint64) uint64
+func addUint64Relaxed(addr *uint64, delta uint64) uint64
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func AddUintptrRelaxed(addr *uintptr, delta uintptr) uintptr
+func addUintptrRelaxed(addr *uintptr, delta uintptr) uintptr
 
 // Acquire
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func AddInt32Acquire(addr *int32, delta int32) int32
+func addInt32Acquire(addr *int32, delta int32) int32
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func AddUint32Acquire(addr *uint32, delta uint32) uint32
+func addUint32Acquire(addr *uint32, delta uint32) uint32
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func AddInt64Acquire(addr *int64, delta int64) int64
+func addInt64Acquire(addr *int64, delta int64) int64
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func AddUint64Acquire(addr *uint64, delta uint64) uint64
+func addUint64Acquire(addr *uint64, delta uint64) uint64
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func AddUintptrAcquire(addr *uintptr, delta uintptr) uintptr
+func addUintptrAcquire(addr *uintptr, delta uintptr) uintptr
 
 // Release
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func AddInt32Release(addr *int32, delta int32) int32
+func addInt32Release(addr *int32, delta int32) int32
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func AddUint32Release(addr *uint32, delta uint32) uint32
+func addUint32Release(addr *uint32, delta uint32) uint32
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func AddInt64Release(addr *int64, delta int64) int64
+func addInt64Release(addr *int64, delta int64) int64
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func AddUint64Release(addr *uint64, delta uint64) uint64
+func addUint64Release(addr *uint64, delta uint64) uint64
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func AddUintptrRelease(addr *uintptr, delta uintptr) uintptr
+func addUintptrRelease(addr *uintptr, delta uintptr) uintptr
 
 // AcqRel
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func AddInt32AcqRel(addr *int32, delta int32) int32
+func addInt32AcqRel(addr *int32, delta int32) int32
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func AddUint32AcqRel(addr *uint32, delta uint32) uint32
+func addUint32AcqRel(addr *uint32, delta uint32) uint32
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func AddInt64AcqRel(addr *int64, delta int64) int64
+func addInt64AcqRel(addr *int64, delta int64) int64
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func AddUint64AcqRel(addr *uint64, delta uint64) uint64
+func addUint64AcqRel(addr *uint64, delta uint64) uint64
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func AddUintptrAcqRel(addr *uintptr, delta uintptr) uintptr
+func addUintptrAcqRel(addr *uintptr, delta uintptr) uintptr
 
 // SeqCst
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func AddInt32SeqCst(addr *int32, delta int32) int32
+func addInt32SeqCst(addr *int32, delta int32) int32
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func AddUint32SeqCst(addr *uint32, delta uint32) uint32
+func addUint32SeqCst(addr *uint32, delta uint32) uint32
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func AddInt64SeqCst(addr *int64, delta int64) int64
+func addInt64SeqCst(addr *int64, delta int64) int64
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func AddUint64SeqCst(addr *uint64, delta uint64) uint64
+func addUint64SeqCst(addr *uint64, delta uint64) uint64
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func AddUintptrSeqCst(addr *uintptr, delta uintptr) uintptr
+func addUintptrSeqCst(addr *uintptr, delta uintptr) uintptr
 
 // ============================================================
 // SWAP operations (Relaxed, Acquire, Release, AcqRel, SeqCst)
@@ -474,135 +474,135 @@ func AddUintptrSeqCst(addr *uintptr, delta uintptr) uintptr
 //go:noescape
 //go:nosplit
 //go:noinline
-func SwapInt32Relaxed(addr *int32, new int32) int32
+func swapInt32Relaxed(addr *int32, new int32) int32
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func SwapUint32Relaxed(addr *uint32, new uint32) uint32
+func swapUint32Relaxed(addr *uint32, new uint32) uint32
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func SwapInt64Relaxed(addr *int64, new int64) int64
+func swapInt64Relaxed(addr *int64, new int64) int64
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func SwapUint64Relaxed(addr *uint64, new uint64) uint64
+func swapUint64Relaxed(addr *uint64, new uint64) uint64
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func SwapUintptrRelaxed(addr *uintptr, new uintptr) uintptr
+func swapUintptrRelaxed(addr *uintptr, new uintptr) uintptr
 
 // Acquire
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func SwapInt32Acquire(addr *int32, new int32) int32
+func swapInt32Acquire(addr *int32, new int32) int32
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func SwapUint32Acquire(addr *uint32, new uint32) uint32
+func swapUint32Acquire(addr *uint32, new uint32) uint32
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func SwapInt64Acquire(addr *int64, new int64) int64
+func swapInt64Acquire(addr *int64, new int64) int64
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func SwapUint64Acquire(addr *uint64, new uint64) uint64
+func swapUint64Acquire(addr *uint64, new uint64) uint64
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func SwapUintptrAcquire(addr *uintptr, new uintptr) uintptr
+func swapUintptrAcquire(addr *uintptr, new uintptr) uintptr
 
 // Release
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func SwapInt32Release(addr *int32, new int32) int32
+func swapInt32Release(addr *int32, new int32) int32
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func SwapUint32Release(addr *uint32, new uint32) uint32
+func swapUint32Release(addr *uint32, new uint32) uint32
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func SwapInt64Release(addr *int64, new int64) int64
+func swapInt64Release(addr *int64, new int64) int64
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func SwapUint64Release(addr *uint64, new uint64) uint64
+func swapUint64Release(addr *uint64, new uint64) uint64
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func SwapUintptrRelease(addr *uintptr, new uintptr) uintptr
+func swapUintptrRelease(addr *uintptr, new uintptr) uintptr
 
 // AcqRel
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func SwapInt32AcqRel(addr *int32, new int32) int32
+func swapInt32AcqRel(addr *int32, new int32) int32
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func SwapUint32AcqRel(addr *uint32, new uint32) uint32
+func swapUint32AcqRel(addr *uint32, new uint32) uint32
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func SwapInt64AcqRel(addr *int64, new int64) int64
+func swapInt64AcqRel(addr *int64, new int64) int64
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func SwapUint64AcqRel(addr *uint64, new uint64) uint64
+func swapUint64AcqRel(addr *uint64, new uint64) uint64
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func SwapUintptrAcqRel(addr *uintptr, new uintptr) uintptr
+func swapUintptrAcqRel(addr *uintptr, new uintptr) uintptr
 
 // SeqCst
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func SwapInt32SeqCst(addr *int32, new int32) int32
+func swapInt32SeqCst(addr *int32, new int32) int32
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func SwapUint32SeqCst(addr *uint32, new uint32) uint32
+func swapUint32SeqCst(addr *uint32, new uint32) uint32
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func SwapInt64SeqCst(addr *int64, new int64) int64
+func swapInt64SeqCst(addr *int64, new int64) int64
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func SwapUint64SeqCst(addr *uint64, new uint64) uint64
+func swapUint64SeqCst(addr *uint64, new uint64) uint64
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func SwapUintptrSeqCst(addr *uintptr, new uintptr) uintptr
+func swapUintptrSeqCst(addr *uintptr, new uintptr) uintptr
 
 // ============================================================
 // BITWISE OR operations
@@ -614,120 +614,120 @@ func SwapUintptrSeqCst(addr *uintptr, new uintptr) uintptr
 //go:noescape
 //go:nosplit
 //go:noinline
-func OrInt32Relaxed(addr *int32, val int32)
+func orInt32Relaxed(addr *int32, val int32)
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func OrUint32Relaxed(addr *uint32, val uint32)
+func orUint32Relaxed(addr *uint32, val uint32)
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func OrInt64Relaxed(addr *int64, val int64)
+func orInt64Relaxed(addr *int64, val int64)
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func OrUint64Relaxed(addr *uint64, val uint64)
+func orUint64Relaxed(addr *uint64, val uint64)
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func OrUintptrRelaxed(addr *uintptr, val uintptr)
+func orUintptrRelaxed(addr *uintptr, val uintptr)
 
 // Acquire
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func OrInt32Acquire(addr *int32, val int32)
+func orInt32Acquire(addr *int32, val int32)
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func OrUint32Acquire(addr *uint32, val uint32)
+func orUint32Acquire(addr *uint32, val uint32)
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func OrInt64Acquire(addr *int64, val int64)
+func orInt64Acquire(addr *int64, val int64)
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func OrUint64Acquire(addr *uint64, val uint64)
+func orUint64Acquire(addr *uint64, val uint64)
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func OrUintptrAcquire(addr *uintptr, val uintptr)
+func orUintptrAcquire(addr *uintptr, val uintptr)
 
 // Release
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func OrInt32Release(addr *int32, val int32)
+func orInt32Release(addr *int32, val int32)
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func OrUint32Release(addr *uint32, val uint32)
+func orUint32Release(addr *uint32, val uint32)
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func OrInt64Release(addr *int64, val int64)
+func orInt64Release(addr *int64, val int64)
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func OrUint64Release(addr *uint64, val uint64)
+func orUint64Release(addr *uint64, val uint64)
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func OrUintptrRelease(addr *uintptr, val uintptr)
+func orUintptrRelease(addr *uintptr, val uintptr)
 
 // SeqCst
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func OrInt32SeqCst(addr *int32, val int32)
+func orInt32SeqCst(addr *int32, val int32)
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func OrUint32SeqCst(addr *uint32, val uint32)
+func orUint32SeqCst(addr *uint32, val uint32)
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func OrInt64SeqCst(addr *int64, val int64)
+func orInt64SeqCst(addr *int64, val int64)
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func OrUint64SeqCst(addr *uint64, val uint64)
+func orUint64SeqCst(addr *uint64, val uint64)
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func OrUintptrSeqCst(addr *uintptr, val uintptr)
+func orUintptrSeqCst(addr *uintptr, val uintptr)
 
-// Or return: AcqRel (full barrier)
-
-//go:noescape
-//go:nosplit
-//go:noinline
-func Or32AcqRel(addr *uint32, val uint32) uint32
+// or return: AcqRel (full barrier)
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func Or64AcqRel(addr *uint64, val uint64) uint64
+func or32AcqRel(addr *uint32, val uint32) uint32
+
+//go:noescape
+//go:nosplit
+//go:noinline
+func or64AcqRel(addr *uint64, val uint64) uint64
 
 // ============================================================
 // BITWISE AND operations
@@ -739,117 +739,117 @@ func Or64AcqRel(addr *uint64, val uint64) uint64
 //go:noescape
 //go:nosplit
 //go:noinline
-func AndInt32Relaxed(addr *int32, val int32)
+func andInt32Relaxed(addr *int32, val int32)
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func AndUint32Relaxed(addr *uint32, val uint32)
+func andUint32Relaxed(addr *uint32, val uint32)
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func AndInt64Relaxed(addr *int64, val int64)
+func andInt64Relaxed(addr *int64, val int64)
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func AndUint64Relaxed(addr *uint64, val uint64)
+func andUint64Relaxed(addr *uint64, val uint64)
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func AndUintptrRelaxed(addr *uintptr, val uintptr)
+func andUintptrRelaxed(addr *uintptr, val uintptr)
 
 // Acquire
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func AndInt32Acquire(addr *int32, val int32)
+func andInt32Acquire(addr *int32, val int32)
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func AndUint32Acquire(addr *uint32, val uint32)
+func andUint32Acquire(addr *uint32, val uint32)
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func AndInt64Acquire(addr *int64, val int64)
+func andInt64Acquire(addr *int64, val int64)
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func AndUint64Acquire(addr *uint64, val uint64)
+func andUint64Acquire(addr *uint64, val uint64)
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func AndUintptrAcquire(addr *uintptr, val uintptr)
+func andUintptrAcquire(addr *uintptr, val uintptr)
 
 // Release
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func AndInt32Release(addr *int32, val int32)
+func andInt32Release(addr *int32, val int32)
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func AndUint32Release(addr *uint32, val uint32)
+func andUint32Release(addr *uint32, val uint32)
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func AndInt64Release(addr *int64, val int64)
+func andInt64Release(addr *int64, val int64)
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func AndUint64Release(addr *uint64, val uint64)
+func andUint64Release(addr *uint64, val uint64)
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func AndUintptrRelease(addr *uintptr, val uintptr)
+func andUintptrRelease(addr *uintptr, val uintptr)
 
 // SeqCst
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func AndInt32SeqCst(addr *int32, val int32)
+func andInt32SeqCst(addr *int32, val int32)
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func AndUint32SeqCst(addr *uint32, val uint32)
+func andUint32SeqCst(addr *uint32, val uint32)
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func AndInt64SeqCst(addr *int64, val int64)
+func andInt64SeqCst(addr *int64, val int64)
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func AndUint64SeqCst(addr *uint64, val uint64)
+func andUint64SeqCst(addr *uint64, val uint64)
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func AndUintptrSeqCst(addr *uintptr, val uintptr)
+func andUintptrSeqCst(addr *uintptr, val uintptr)
 
 // And with return value: AcqRel (full barrier)
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func And32AcqRel(addr *uint32, val uint32) uint32
+func and32AcqRel(addr *uint32, val uint32) uint32
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func And64AcqRel(addr *uint64, val uint64) uint64
+func and64AcqRel(addr *uint64, val uint64) uint64

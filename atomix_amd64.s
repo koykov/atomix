@@ -16,96 +16,88 @@
 // LOAD operations
 // ============================================================
 
-// LoadRelaxed - no barriers, just load
-TEXT ·LoadInt32Relaxed(SB), NOSPLIT, $0-12
+// loadRelaxed - no barriers, just load
+TEXT ·loadInt32Relaxed(SB), NOSPLIT, $0-12
     MOVQ    ptr+0(FP), BX
     MOVL    (BX), AX
     MOVL    AX, ret+8(FP)
     RET
 
-TEXT ·LoadUint32Relaxed(SB), NOSPLIT, $0-12
+TEXT ·loadUint32Relaxed(SB), NOSPLIT, $0-12
     MOVQ    ptr+0(FP), BX
     MOVL    (BX), AX
     MOVL    AX, ret+8(FP)
     RET
 
-TEXT ·LoadInt64Relaxed(SB), NOSPLIT, $0-16
+TEXT ·loadInt64Relaxed(SB), NOSPLIT, $0-16
     MOVQ    ptr+0(FP), BX
     MOVQ    (BX), AX
     MOVQ    AX, ret+8(FP)
     RET
 
-TEXT ·LoadUint64Relaxed(SB), NOSPLIT, $0-16
+TEXT ·loadUint64Relaxed(SB), NOSPLIT, $0-16
     MOVQ    ptr+0(FP), BX
     MOVQ    (BX), AX
     MOVQ    AX, ret+8(FP)
     RET
 
-TEXT ·LoadUintptrRelaxed(SB), NOSPLIT, $0-16
+TEXT ·loadUintptrRelaxed(SB), NOSPLIT, $0-16
     MOVQ    ptr+0(FP), BX
     MOVQ    (BX), AX
     MOVQ    AX, ret+8(FP)
     RET
 
-TEXT ·LoadPointerRelaxed(SB), NOSPLIT, $0-16
+TEXT ·loadPointerRelaxed(SB), NOSPLIT, $0-16
     MOVQ    ptr+0(FP), BX
     MOVQ    (BX), AX
     MOVQ    AX, ret+8(FP)
     RET
 
-// LoadAcquire - LFENCE guarantees next reads will not reorder till load
-TEXT ·LoadInt32Acquire(SB), NOSPLIT, $0-12
-    MOVQ    ptr+0(FP), BX
-    MOVL    (BX), AX
-    LFENCE
-    MOVL    AX, ret+8(FP)
-    RET
-
-TEXT ·LoadUint32Acquire(SB), NOSPLIT, $0-12
+// loadAcquire - LFENCE guarantees next reads will not reorder till load
+TEXT ·loadInt32Acquire(SB), NOSPLIT, $0-12
     MOVQ    ptr+0(FP), BX
     MOVL    (BX), AX
     LFENCE
     MOVL    AX, ret+8(FP)
     RET
 
-TEXT ·LoadInt64Acquire(SB), NOSPLIT, $0-16
+TEXT ·loadUint32Acquire(SB), NOSPLIT, $0-12
     MOVQ    ptr+0(FP), BX
-    MOVQ    (BX), AX
-    LFENCE
-    MOVQ    AX, ret+8(FP)
-    RET
-
-TEXT ·LoadUint64Acquire(SB), NOSPLIT, $0-16
-    MOVQ    ptr+0(FP), BX
-    MOVQ    (BX), AX
-    LFENCE
-    MOVQ    AX, ret+8(FP)
-    RET
-
-TEXT ·LoadUintptrAcquire(SB), NOSPLIT, $0-16
-    MOVQ    ptr+0(FP), BX
-    MOVQ    (BX), AX
-    LFENCE
-    MOVQ    AX, ret+8(FP)
-    RET
-
-TEXT ·LoadPointerAcquire(SB), NOSPLIT, $0-16
-    MOVQ    ptr+0(FP), BX
-    MOVQ    (BX), AX
-    LFENCE
-    MOVQ    AX, ret+8(FP)
-    RET
-
-// LoadSeqCst - full barrier
-TEXT ·LoadInt32SeqCst(SB), NOSPLIT, $0-12
-    MOVQ    ptr+0(FP), BX
-    MFENCE
     MOVL    (BX), AX
-    MFENCE
+    LFENCE
     MOVL    AX, ret+8(FP)
     RET
 
-TEXT ·LoadUint32SeqCst(SB), NOSPLIT, $0-12
+TEXT ·loadInt64Acquire(SB), NOSPLIT, $0-16
+    MOVQ    ptr+0(FP), BX
+    MOVQ    (BX), AX
+    LFENCE
+    MOVQ    AX, ret+8(FP)
+    RET
+
+TEXT ·loadUint64Acquire(SB), NOSPLIT, $0-16
+    MOVQ    ptr+0(FP), BX
+    MOVQ    (BX), AX
+    LFENCE
+    MOVQ    AX, ret+8(FP)
+    RET
+
+TEXT ·loadUintptrAcquire(SB), NOSPLIT, $0-16
+    MOVQ    ptr+0(FP), BX
+    MOVQ    (BX), AX
+    LFENCE
+    MOVQ    AX, ret+8(FP)
+    RET
+
+TEXT ·loadPointerAcquire(SB), NOSPLIT, $0-16
+    MOVQ    ptr+0(FP), BX
+    MOVQ    (BX), AX
+    LFENCE
+    MOVQ    AX, ret+8(FP)
+    RET
+
+// loadSeqCst - full barrier
+TEXT ·loadInt32SeqCst(SB), NOSPLIT, $0-12
     MOVQ    ptr+0(FP), BX
     MFENCE
     MOVL    (BX), AX
@@ -113,7 +105,15 @@ TEXT ·LoadUint32SeqCst(SB), NOSPLIT, $0-12
     MOVL    AX, ret+8(FP)
     RET
 
-TEXT ·LoadInt64SeqCst(SB), NOSPLIT, $0-16
+TEXT ·loadUint32SeqCst(SB), NOSPLIT, $0-12
+    MOVQ    ptr+0(FP), BX
+    MFENCE
+    MOVL    (BX), AX
+    MFENCE
+    MOVL    AX, ret+8(FP)
+    RET
+
+TEXT ·loadInt64SeqCst(SB), NOSPLIT, $0-16
     MOVQ    ptr+0(FP), BX
     MFENCE
     MOVQ    (BX), AX
@@ -121,7 +121,7 @@ TEXT ·LoadInt64SeqCst(SB), NOSPLIT, $0-16
     MOVQ    AX, ret+8(FP)
     RET
 
-TEXT ·LoadUint64SeqCst(SB), NOSPLIT, $0-16
+TEXT ·loadUint64SeqCst(SB), NOSPLIT, $0-16
     MOVQ    ptr+0(FP), BX
     MFENCE
     MOVQ    (BX), AX
@@ -129,7 +129,7 @@ TEXT ·LoadUint64SeqCst(SB), NOSPLIT, $0-16
     MOVQ    AX, ret+8(FP)
     RET
 
-TEXT ·LoadUintptrSeqCst(SB), NOSPLIT, $0-16
+TEXT ·loadUintptrSeqCst(SB), NOSPLIT, $0-16
     MOVQ    ptr+0(FP), BX
     MFENCE
     MOVQ    (BX), AX
@@ -137,7 +137,7 @@ TEXT ·LoadUintptrSeqCst(SB), NOSPLIT, $0-16
     MOVQ    AX, ret+8(FP)
     RET
 
-TEXT ·LoadPointerSeqCst(SB), NOSPLIT, $0-16
+TEXT ·loadPointerSeqCst(SB), NOSPLIT, $0-16
     MOVQ    ptr+0(FP), BX
     MFENCE
     MOVQ    (BX), AX
@@ -149,75 +149,75 @@ TEXT ·LoadPointerSeqCst(SB), NOSPLIT, $0-16
 // STORE operations
 // ============================================================
 
-// StoreRelaxed - no barriers
-TEXT ·StoreInt32Relaxed(SB), NOSPLIT, $0-12
+// storeRelaxed - no barriers
+TEXT ·storeInt32Relaxed(SB), NOSPLIT, $0-12
     MOVQ    ptr+0(FP), BX
     MOVL    val+8(FP), AX
     MOVL    AX, (BX)
     RET
 
-TEXT ·StoreUint32Relaxed(SB), NOSPLIT, $0-12
+TEXT ·storeUint32Relaxed(SB), NOSPLIT, $0-12
     MOVQ    ptr+0(FP), BX
     MOVL    val+8(FP), AX
     MOVL    AX, (BX)
     RET
 
-TEXT ·StoreInt64Relaxed(SB), NOSPLIT, $0-16
+TEXT ·storeInt64Relaxed(SB), NOSPLIT, $0-16
     MOVQ    ptr+0(FP), BX
     MOVQ    val+8(FP), AX
     MOVQ    AX, (BX)
     RET
 
-TEXT ·StoreUint64Relaxed(SB), NOSPLIT, $0-16
+TEXT ·storeUint64Relaxed(SB), NOSPLIT, $0-16
     MOVQ    ptr+0(FP), BX
     MOVQ    val+8(FP), AX
     MOVQ    AX, (BX)
     RET
 
-TEXT ·StoreUintptrRelaxed(SB), NOSPLIT, $0-16
+TEXT ·storeUintptrRelaxed(SB), NOSPLIT, $0-16
     MOVQ    ptr+0(FP), BX
     MOVQ    val+8(FP), AX
     MOVQ    AX, (BX)
     RET
 
-// StoreRelease - SFENCE guarantees previous writes visible till call
-TEXT ·StoreInt32Release(SB), NOSPLIT, $0-12
-    MOVQ    ptr+0(FP), BX
-    MOVL    val+8(FP), AX
-    SFENCE
-    MOVL    AX, (BX)
-    RET
-
-TEXT ·StoreUint32Release(SB), NOSPLIT, $0-12
+// storeRelease - SFENCE guarantees previous writes visible till call
+TEXT ·storeInt32Release(SB), NOSPLIT, $0-12
     MOVQ    ptr+0(FP), BX
     MOVL    val+8(FP), AX
     SFENCE
     MOVL    AX, (BX)
     RET
 
-TEXT ·StoreInt64Release(SB), NOSPLIT, $0-16
+TEXT ·storeUint32Release(SB), NOSPLIT, $0-12
+    MOVQ    ptr+0(FP), BX
+    MOVL    val+8(FP), AX
+    SFENCE
+    MOVL    AX, (BX)
+    RET
+
+TEXT ·storeInt64Release(SB), NOSPLIT, $0-16
     MOVQ    ptr+0(FP), BX
     MOVQ    val+8(FP), AX
     SFENCE
     MOVQ    AX, (BX)
     RET
 
-TEXT ·StoreUint64Release(SB), NOSPLIT, $0-16
+TEXT ·storeUint64Release(SB), NOSPLIT, $0-16
     MOVQ    ptr+0(FP), BX
     MOVQ    val+8(FP), AX
     SFENCE
     MOVQ    AX, (BX)
     RET
 
-TEXT ·StoreUintptrRelease(SB), NOSPLIT, $0-16
+TEXT ·storeUintptrRelease(SB), NOSPLIT, $0-16
     MOVQ    ptr+0(FP), BX
     MOVQ    val+8(FP), AX
     SFENCE
     MOVQ    AX, (BX)
     RET
 
-// StoreSeqCst - full barrier
-TEXT ·StoreInt32SeqCst(SB), NOSPLIT, $0-12
+// storeSeqCst - full barrier
+TEXT ·storeInt32SeqCst(SB), NOSPLIT, $0-12
     MOVQ    ptr+0(FP), BX
     MOVL    val+8(FP), AX
     MFENCE
@@ -225,7 +225,7 @@ TEXT ·StoreInt32SeqCst(SB), NOSPLIT, $0-12
     MFENCE
     RET
 
-TEXT ·StoreUint32SeqCst(SB), NOSPLIT, $0-12
+TEXT ·storeUint32SeqCst(SB), NOSPLIT, $0-12
     MOVQ    ptr+0(FP), BX
     MOVL    val+8(FP), AX
     MFENCE
@@ -233,7 +233,7 @@ TEXT ·StoreUint32SeqCst(SB), NOSPLIT, $0-12
     MFENCE
     RET
 
-TEXT ·StoreInt64SeqCst(SB), NOSPLIT, $0-16
+TEXT ·storeInt64SeqCst(SB), NOSPLIT, $0-16
     MOVQ    ptr+0(FP), BX
     MOVQ    val+8(FP), AX
     MFENCE
@@ -241,7 +241,7 @@ TEXT ·StoreInt64SeqCst(SB), NOSPLIT, $0-16
     MFENCE
     RET
 
-TEXT ·StoreUint64SeqCst(SB), NOSPLIT, $0-16
+TEXT ·storeUint64SeqCst(SB), NOSPLIT, $0-16
     MOVQ    ptr+0(FP), BX
     MOVQ    val+8(FP), AX
     MFENCE
@@ -249,7 +249,7 @@ TEXT ·StoreUint64SeqCst(SB), NOSPLIT, $0-16
     MFENCE
     RET
 
-TEXT ·StoreUintptrSeqCst(SB), NOSPLIT, $0-16
+TEXT ·storeUintptrSeqCst(SB), NOSPLIT, $0-16
     MOVQ    ptr+0(FP), BX
     MOVQ    val+8(FP), AX
     MFENCE
@@ -261,8 +261,8 @@ TEXT ·StoreUintptrSeqCst(SB), NOSPLIT, $0-16
 // CAS (Compare And Swap) operations
 // ============================================================
 
-// CasRelaxed - no barriers
-TEXT ·CasInt32Relaxed(SB), NOSPLIT, $0-17
+// casRelaxed - no barriers
+TEXT ·casInt32Relaxed(SB), NOSPLIT, $0-17
     MOVQ    ptr+0(FP), BX
     MOVL    old+8(FP), AX
     MOVL    new+12(FP), CX
@@ -271,7 +271,7 @@ TEXT ·CasInt32Relaxed(SB), NOSPLIT, $0-17
     SETEQ   ret+16(FP)
     RET
 
-TEXT ·CasUint32Relaxed(SB), NOSPLIT, $0-17
+TEXT ·casUint32Relaxed(SB), NOSPLIT, $0-17
     MOVQ    ptr+0(FP), BX
     MOVL    old+8(FP), AX
     MOVL    new+12(FP), CX
@@ -280,7 +280,7 @@ TEXT ·CasUint32Relaxed(SB), NOSPLIT, $0-17
     SETEQ   ret+16(FP)
     RET
 
-TEXT ·CasInt64Relaxed(SB), NOSPLIT, $0-25
+TEXT ·casInt64Relaxed(SB), NOSPLIT, $0-25
     MOVQ    ptr+0(FP), BX
     MOVQ    old+8(FP), AX
     MOVQ    new+16(FP), CX
@@ -289,7 +289,7 @@ TEXT ·CasInt64Relaxed(SB), NOSPLIT, $0-25
     SETEQ   ret+24(FP)
     RET
 
-TEXT ·CasUint64Relaxed(SB), NOSPLIT, $0-25
+TEXT ·casUint64Relaxed(SB), NOSPLIT, $0-25
     MOVQ    ptr+0(FP), BX
     MOVQ    old+8(FP), AX
     MOVQ    new+16(FP), CX
@@ -298,7 +298,7 @@ TEXT ·CasUint64Relaxed(SB), NOSPLIT, $0-25
     SETEQ   ret+24(FP)
     RET
 
-TEXT ·CasUintptrRelaxed(SB), NOSPLIT, $0-25
+TEXT ·casUintptrRelaxed(SB), NOSPLIT, $0-25
     MOVQ    ptr+0(FP), BX
     MOVQ    old+8(FP), AX
     MOVQ    new+16(FP), CX
@@ -307,18 +307,8 @@ TEXT ·CasUintptrRelaxed(SB), NOSPLIT, $0-25
     SETEQ   ret+24(FP)
     RET
 
-// CasAcquire - CAS with acquire semantic(barrier after sucessful operation)
-TEXT ·CasInt32Acquire(SB), NOSPLIT, $0-17
-    MOVQ    ptr+0(FP), BX
-    MOVL    old+8(FP), AX
-    MOVL    new+12(FP), CX
-    LOCK
-    CMPXCHGL    CX, (BX)
-    LFENCE
-    SETEQ   ret+16(FP)
-    RET
-
-TEXT ·CasUint32Acquire(SB), NOSPLIT, $0-17
+// casAcquire - CAS with acquire semantic(barrier after sucessful operation)
+TEXT ·casInt32Acquire(SB), NOSPLIT, $0-17
     MOVQ    ptr+0(FP), BX
     MOVL    old+8(FP), AX
     MOVL    new+12(FP), CX
@@ -328,7 +318,17 @@ TEXT ·CasUint32Acquire(SB), NOSPLIT, $0-17
     SETEQ   ret+16(FP)
     RET
 
-TEXT ·CasInt64Acquire(SB), NOSPLIT, $0-25
+TEXT ·casUint32Acquire(SB), NOSPLIT, $0-17
+    MOVQ    ptr+0(FP), BX
+    MOVL    old+8(FP), AX
+    MOVL    new+12(FP), CX
+    LOCK
+    CMPXCHGL    CX, (BX)
+    LFENCE
+    SETEQ   ret+16(FP)
+    RET
+
+TEXT ·casInt64Acquire(SB), NOSPLIT, $0-25
     MOVQ    ptr+0(FP), BX
     MOVQ    old+8(FP), AX
     MOVQ    new+16(FP), CX
@@ -338,7 +338,7 @@ TEXT ·CasInt64Acquire(SB), NOSPLIT, $0-25
     SETEQ   ret+24(FP)
     RET
 
-TEXT ·CasUint64Acquire(SB), NOSPLIT, $0-25
+TEXT ·casUint64Acquire(SB), NOSPLIT, $0-25
     MOVQ    ptr+0(FP), BX
     MOVQ    old+8(FP), AX
     MOVQ    new+16(FP), CX
@@ -348,7 +348,7 @@ TEXT ·CasUint64Acquire(SB), NOSPLIT, $0-25
     SETEQ   ret+24(FP)
     RET
 
-TEXT ·CasUintptrAcquire(SB), NOSPLIT, $0-25
+TEXT ·casUintptrAcquire(SB), NOSPLIT, $0-25
     MOVQ    ptr+0(FP), BX
     MOVQ    old+8(FP), AX
     MOVQ    new+16(FP), CX
@@ -358,8 +358,8 @@ TEXT ·CasUintptrAcquire(SB), NOSPLIT, $0-25
     SETEQ   ret+24(FP)
     RET
 
-// CasRelease - CAS with release seantic (barrier before operation)
-TEXT ·CasInt32Release(SB), NOSPLIT, $0-17
+// casRelease - CAS with release seantic (barrier before operation)
+TEXT ·casInt32Release(SB), NOSPLIT, $0-17
     MOVQ    ptr+0(FP), BX
     MOVL    old+8(FP), AX
     MOVL    new+12(FP), CX
@@ -369,7 +369,7 @@ TEXT ·CasInt32Release(SB), NOSPLIT, $0-17
     SETEQ   ret+16(FP)
     RET
 
-TEXT ·CasUint32Release(SB), NOSPLIT, $0-17
+TEXT ·casUint32Release(SB), NOSPLIT, $0-17
     MOVQ    ptr+0(FP), BX
     MOVL    old+8(FP), AX
     MOVL    new+12(FP), CX
@@ -379,7 +379,7 @@ TEXT ·CasUint32Release(SB), NOSPLIT, $0-17
     SETEQ   ret+16(FP)
     RET
 
-TEXT ·CasInt64Release(SB), NOSPLIT, $0-25
+TEXT ·casInt64Release(SB), NOSPLIT, $0-25
     MOVQ    ptr+0(FP), BX
     MOVQ    old+8(FP), AX
     MOVQ    new+16(FP), CX
@@ -389,7 +389,7 @@ TEXT ·CasInt64Release(SB), NOSPLIT, $0-25
     SETEQ   ret+24(FP)
     RET
 
-TEXT ·CasUint64Release(SB), NOSPLIT, $0-25
+TEXT ·casUint64Release(SB), NOSPLIT, $0-25
     MOVQ    ptr+0(FP), BX
     MOVQ    old+8(FP), AX
     MOVQ    new+16(FP), CX
@@ -399,7 +399,7 @@ TEXT ·CasUint64Release(SB), NOSPLIT, $0-25
     SETEQ   ret+24(FP)
     RET
 
-TEXT ·CasUintptrRelease(SB), NOSPLIT, $0-25
+TEXT ·casUintptrRelease(SB), NOSPLIT, $0-25
     MOVQ    ptr+0(FP), BX
     MOVQ    old+8(FP), AX
     MOVQ    new+16(FP), CX
@@ -409,8 +409,8 @@ TEXT ·CasUintptrRelease(SB), NOSPLIT, $0-25
     SETEQ   ret+24(FP)
     RET
 
-// CasAcqRel - full barrier (both direction)
-TEXT ·CasInt32AcqRel(SB), NOSPLIT, $0-17
+// casAcqRel - full barrier (both direction)
+TEXT ·casInt32AcqRel(SB), NOSPLIT, $0-17
     MOVQ    ptr+0(FP), BX
     MOVL    old+8(FP), AX
     MOVL    new+12(FP), CX
@@ -421,7 +421,7 @@ TEXT ·CasInt32AcqRel(SB), NOSPLIT, $0-17
     SETEQ   ret+16(FP)
     RET
 
-TEXT ·CasUint32AcqRel(SB), NOSPLIT, $0-17
+TEXT ·casUint32AcqRel(SB), NOSPLIT, $0-17
     MOVQ    ptr+0(FP), BX
     MOVL    old+8(FP), AX
     MOVL    new+12(FP), CX
@@ -432,7 +432,7 @@ TEXT ·CasUint32AcqRel(SB), NOSPLIT, $0-17
     SETEQ   ret+16(FP)
     RET
 
-TEXT ·CasInt64AcqRel(SB), NOSPLIT, $0-25
+TEXT ·casInt64AcqRel(SB), NOSPLIT, $0-25
     MOVQ    ptr+0(FP), BX
     MOVQ    old+8(FP), AX
     MOVQ    new+16(FP), CX
@@ -443,7 +443,7 @@ TEXT ·CasInt64AcqRel(SB), NOSPLIT, $0-25
     SETEQ   ret+24(FP)
     RET
 
-TEXT ·CasUint64AcqRel(SB), NOSPLIT, $0-25
+TEXT ·casUint64AcqRel(SB), NOSPLIT, $0-25
     MOVQ    ptr+0(FP), BX
     MOVQ    old+8(FP), AX
     MOVQ    new+16(FP), CX
@@ -454,7 +454,7 @@ TEXT ·CasUint64AcqRel(SB), NOSPLIT, $0-25
     SETEQ   ret+24(FP)
     RET
 
-TEXT ·CasUintptrAcqRel(SB), NOSPLIT, $0-25
+TEXT ·casUintptrAcqRel(SB), NOSPLIT, $0-25
     MOVQ    ptr+0(FP), BX
     MOVQ    old+8(FP), AX
     MOVQ    new+16(FP), CX
@@ -465,8 +465,8 @@ TEXT ·CasUintptrAcqRel(SB), NOSPLIT, $0-25
     SETEQ   ret+24(FP)
     RET
 
-// CasSeqCst - full barrier + global order
-TEXT ·CasInt32SeqCst(SB), NOSPLIT, $0-17
+// casSeqCst - full barrier + global order
+TEXT ·casInt32SeqCst(SB), NOSPLIT, $0-17
     MOVQ    ptr+0(FP), BX
     MOVL    old+8(FP), AX
     MOVL    new+12(FP), CX
@@ -477,7 +477,7 @@ TEXT ·CasInt32SeqCst(SB), NOSPLIT, $0-17
     SETEQ   ret+16(FP)
     RET
 
-TEXT ·CasUint32SeqCst(SB), NOSPLIT, $0-17
+TEXT ·casUint32SeqCst(SB), NOSPLIT, $0-17
     MOVQ    ptr+0(FP), BX
     MOVL    old+8(FP), AX
     MOVL    new+12(FP), CX
@@ -488,7 +488,7 @@ TEXT ·CasUint32SeqCst(SB), NOSPLIT, $0-17
     SETEQ   ret+16(FP)
     RET
 
-TEXT ·CasInt64SeqCst(SB), NOSPLIT, $0-25
+TEXT ·casInt64SeqCst(SB), NOSPLIT, $0-25
     MOVQ    ptr+0(FP), BX
     MOVQ    old+8(FP), AX
     MOVQ    new+16(FP), CX
@@ -499,7 +499,7 @@ TEXT ·CasInt64SeqCst(SB), NOSPLIT, $0-25
     SETEQ   ret+24(FP)
     RET
 
-TEXT ·CasUint64SeqCst(SB), NOSPLIT, $0-25
+TEXT ·casUint64SeqCst(SB), NOSPLIT, $0-25
     MOVQ    ptr+0(FP), BX
     MOVQ    old+8(FP), AX
     MOVQ    new+16(FP), CX
@@ -510,7 +510,7 @@ TEXT ·CasUint64SeqCst(SB), NOSPLIT, $0-25
     SETEQ   ret+24(FP)
     RET
 
-TEXT ·CasUintptrSeqCst(SB), NOSPLIT, $0-25
+TEXT ·casUintptrSeqCst(SB), NOSPLIT, $0-25
     MOVQ    ptr+0(FP), BX
     MOVQ    old+8(FP), AX
     MOVQ    new+16(FP), CX
@@ -526,7 +526,7 @@ TEXT ·CasUintptrSeqCst(SB), NOSPLIT, $0-25
 // ============================================================
 
 // XaddRelaxed - no barrier
-TEXT ·AddInt32Relaxed(SB), NOSPLIT, $0-20
+TEXT ·addInt32Relaxed(SB), NOSPLIT, $0-20
     MOVQ    ptr+0(FP), BX
     MOVL    delta+8(FP), AX
     MOVL    AX, CX
@@ -536,7 +536,7 @@ TEXT ·AddInt32Relaxed(SB), NOSPLIT, $0-20
     MOVL    AX, ret+16(FP)
     RET
 
-TEXT ·AddUint32Relaxed(SB), NOSPLIT, $0-20
+TEXT ·addUint32Relaxed(SB), NOSPLIT, $0-20
     MOVQ    ptr+0(FP), BX
     MOVL    delta+8(FP), AX
     MOVL    AX, CX
@@ -546,7 +546,7 @@ TEXT ·AddUint32Relaxed(SB), NOSPLIT, $0-20
     MOVL    AX, ret+16(FP)
     RET
 
-TEXT ·AddInt64Relaxed(SB), NOSPLIT, $0-24
+TEXT ·addInt64Relaxed(SB), NOSPLIT, $0-24
     MOVQ    ptr+0(FP), BX
     MOVQ    delta+8(FP), AX
     MOVQ    AX, CX
@@ -556,7 +556,7 @@ TEXT ·AddInt64Relaxed(SB), NOSPLIT, $0-24
     MOVQ    AX, ret+16(FP)
     RET
 
-TEXT ·AddUint64Relaxed(SB), NOSPLIT, $0-24
+TEXT ·addUint64Relaxed(SB), NOSPLIT, $0-24
     MOVQ    ptr+0(FP), BX
     MOVQ    delta+8(FP), AX
     MOVQ    AX, CX
@@ -566,7 +566,7 @@ TEXT ·AddUint64Relaxed(SB), NOSPLIT, $0-24
     MOVQ    AX, ret+16(FP)
     RET
 
-TEXT ·AddUintptrRelaxed(SB), NOSPLIT, $0-24
+TEXT ·addUintptrRelaxed(SB), NOSPLIT, $0-24
     MOVQ    ptr+0(FP), BX
     MOVQ    delta+8(FP), AX
     MOVQ    AX, CX
@@ -577,7 +577,7 @@ TEXT ·AddUintptrRelaxed(SB), NOSPLIT, $0-24
     RET
 
 // XaddAcquire - XADD + LFENCE (acquire)
-TEXT ·AddInt32Acquire(SB), NOSPLIT, $0-20
+TEXT ·addInt32Acquire(SB), NOSPLIT, $0-20
     MOVQ    ptr+0(FP), BX
     MOVL    delta+8(FP), AX
     MOVL    AX, CX
@@ -588,7 +588,7 @@ TEXT ·AddInt32Acquire(SB), NOSPLIT, $0-20
     MOVL    AX, ret+16(FP)
     RET
 
-TEXT ·AddUint32Acquire(SB), NOSPLIT, $0-20
+TEXT ·addUint32Acquire(SB), NOSPLIT, $0-20
     MOVQ    ptr+0(FP), BX
     MOVL    delta+8(FP), AX
     MOVL    AX, CX
@@ -599,7 +599,7 @@ TEXT ·AddUint32Acquire(SB), NOSPLIT, $0-20
     MOVL    AX, ret+16(FP)
     RET
 
-TEXT ·AddInt64Acquire(SB), NOSPLIT, $0-24
+TEXT ·addInt64Acquire(SB), NOSPLIT, $0-24
     MOVQ    ptr+0(FP), BX
     MOVQ    delta+8(FP), AX
     MOVQ    AX, CX
@@ -610,7 +610,7 @@ TEXT ·AddInt64Acquire(SB), NOSPLIT, $0-24
     MOVQ    AX, ret+16(FP)
     RET
 
-TEXT ·AddUint64Acquire(SB), NOSPLIT, $0-24
+TEXT ·addUint64Acquire(SB), NOSPLIT, $0-24
     MOVQ    ptr+0(FP), BX
     MOVQ    delta+8(FP), AX
     MOVQ    AX, CX
@@ -621,7 +621,7 @@ TEXT ·AddUint64Acquire(SB), NOSPLIT, $0-24
     MOVQ    AX, ret+16(FP)
     RET
 
-TEXT ·AddUintptrAcquire(SB), NOSPLIT, $0-24
+TEXT ·addUintptrAcquire(SB), NOSPLIT, $0-24
     MOVQ    ptr+0(FP), BX
     MOVQ    delta+8(FP), AX
     MOVQ    AX, CX
@@ -633,7 +633,7 @@ TEXT ·AddUintptrAcquire(SB), NOSPLIT, $0-24
     RET
 
 // XaddRelease - SFENCE + XADD (release)
-TEXT ·AddInt32Release(SB), NOSPLIT, $0-20
+TEXT ·addInt32Release(SB), NOSPLIT, $0-20
     MOVQ    ptr+0(FP), BX
     MOVL    delta+8(FP), AX
     MOVL    AX, CX
@@ -644,7 +644,7 @@ TEXT ·AddInt32Release(SB), NOSPLIT, $0-20
     MOVL    AX, ret+16(FP)
     RET
 
-TEXT ·AddUint32Release(SB), NOSPLIT, $0-20
+TEXT ·addUint32Release(SB), NOSPLIT, $0-20
     MOVQ    ptr+0(FP), BX
     MOVL    delta+8(FP), AX
     MOVL    AX, CX
@@ -655,7 +655,7 @@ TEXT ·AddUint32Release(SB), NOSPLIT, $0-20
     MOVL    AX, ret+16(FP)
     RET
 
-TEXT ·AddInt64Release(SB), NOSPLIT, $0-24
+TEXT ·addInt64Release(SB), NOSPLIT, $0-24
     MOVQ    ptr+0(FP), BX
     MOVQ    delta+8(FP), AX
     MOVQ    AX, CX
@@ -666,7 +666,7 @@ TEXT ·AddInt64Release(SB), NOSPLIT, $0-24
     MOVQ    AX, ret+16(FP)
     RET
 
-TEXT ·AddUint64Release(SB), NOSPLIT, $0-24
+TEXT ·addUint64Release(SB), NOSPLIT, $0-24
     MOVQ    ptr+0(FP), BX
     MOVQ    delta+8(FP), AX
     MOVQ    AX, CX
@@ -677,7 +677,7 @@ TEXT ·AddUint64Release(SB), NOSPLIT, $0-24
     MOVQ    AX, ret+16(FP)
     RET
 
-TEXT ·AddUintptrRelease(SB), NOSPLIT, $0-24
+TEXT ·addUintptrRelease(SB), NOSPLIT, $0-24
     MOVQ    ptr+0(FP), BX
     MOVQ    delta+8(FP), AX
     MOVQ    AX, CX
@@ -689,7 +689,7 @@ TEXT ·AddUintptrRelease(SB), NOSPLIT, $0-24
     RET
 
 // XaddAcqRel - full barrier
-TEXT ·AddInt32AcqRel(SB), NOSPLIT, $0-20
+TEXT ·addInt32AcqRel(SB), NOSPLIT, $0-20
     MOVQ    ptr+0(FP), BX
     MOVL    delta+8(FP), AX
     MOVL    AX, CX
@@ -701,7 +701,7 @@ TEXT ·AddInt32AcqRel(SB), NOSPLIT, $0-20
     MOVL    AX, ret+16(FP)
     RET
 
-TEXT ·AddUint32AcqRel(SB), NOSPLIT, $0-20
+TEXT ·addUint32AcqRel(SB), NOSPLIT, $0-20
     MOVQ    ptr+0(FP), BX
     MOVL    delta+8(FP), AX
     MOVL    AX, CX
@@ -713,7 +713,7 @@ TEXT ·AddUint32AcqRel(SB), NOSPLIT, $0-20
     MOVL    AX, ret+16(FP)
     RET
 
-TEXT ·AddInt64AcqRel(SB), NOSPLIT, $0-24
+TEXT ·addInt64AcqRel(SB), NOSPLIT, $0-24
     MOVQ    ptr+0(FP), BX
     MOVQ    delta+8(FP), AX
     MOVQ    AX, CX
@@ -725,7 +725,7 @@ TEXT ·AddInt64AcqRel(SB), NOSPLIT, $0-24
     MOVQ    AX, ret+16(FP)
     RET
 
-TEXT ·AddUint64AcqRel(SB), NOSPLIT, $0-24
+TEXT ·addUint64AcqRel(SB), NOSPLIT, $0-24
     MOVQ    ptr+0(FP), BX
     MOVQ    delta+8(FP), AX
     MOVQ    AX, CX
@@ -737,7 +737,7 @@ TEXT ·AddUint64AcqRel(SB), NOSPLIT, $0-24
     MOVQ    AX, ret+16(FP)
     RET
 
-TEXT ·AddUintptrAcqRel(SB), NOSPLIT, $0-24
+TEXT ·addUintptrAcqRel(SB), NOSPLIT, $0-24
     MOVQ    ptr+0(FP), BX
     MOVQ    delta+8(FP), AX
     MOVQ    AX, CX
@@ -750,7 +750,7 @@ TEXT ·AddUintptrAcqRel(SB), NOSPLIT, $0-24
     RET
 
 // XaddSeqCst - full barrier + global order
-TEXT ·AddInt32SeqCst(SB), NOSPLIT, $0-20
+TEXT ·addInt32SeqCst(SB), NOSPLIT, $0-20
     MOVQ    ptr+0(FP), BX
     MOVL    delta+8(FP), AX
     MOVL    AX, CX
@@ -762,7 +762,7 @@ TEXT ·AddInt32SeqCst(SB), NOSPLIT, $0-20
     MOVL    AX, ret+16(FP)
     RET
 
-TEXT ·AddUint32SeqCst(SB), NOSPLIT, $0-20
+TEXT ·addUint32SeqCst(SB), NOSPLIT, $0-20
     MOVQ    ptr+0(FP), BX
     MOVL    delta+8(FP), AX
     MOVL    AX, CX
@@ -774,7 +774,7 @@ TEXT ·AddUint32SeqCst(SB), NOSPLIT, $0-20
     MOVL    AX, ret+16(FP)
     RET
 
-TEXT ·AddInt64SeqCst(SB), NOSPLIT, $0-24
+TEXT ·addInt64SeqCst(SB), NOSPLIT, $0-24
     MOVQ    ptr+0(FP), BX
     MOVQ    delta+8(FP), AX
     MOVQ    AX, CX
@@ -786,7 +786,7 @@ TEXT ·AddInt64SeqCst(SB), NOSPLIT, $0-24
     MOVQ    AX, ret+16(FP)
     RET
 
-TEXT ·AddUint64SeqCst(SB), NOSPLIT, $0-24
+TEXT ·addUint64SeqCst(SB), NOSPLIT, $0-24
     MOVQ    ptr+0(FP), BX
     MOVQ    delta+8(FP), AX
     MOVQ    AX, CX
@@ -798,7 +798,7 @@ TEXT ·AddUint64SeqCst(SB), NOSPLIT, $0-24
     MOVQ    AX, ret+16(FP)
     RET
 
-TEXT ·AddUintptrSeqCst(SB), NOSPLIT, $0-24
+TEXT ·addUintptrSeqCst(SB), NOSPLIT, $0-24
     MOVQ    ptr+0(FP), BX
     MOVQ    delta+8(FP), AX
     MOVQ    AX, CX
@@ -815,35 +815,35 @@ TEXT ·AddUintptrSeqCst(SB), NOSPLIT, $0-24
 // ============================================================
 
 // XchgRelaxed - no barrier
-TEXT ·SwapInt32Relaxed(SB), NOSPLIT, $0-20
+TEXT ·swapInt32Relaxed(SB), NOSPLIT, $0-20
     MOVQ    ptr+0(FP), BX
     MOVL    new+8(FP), AX
     XCHGL   AX, (BX)
     MOVL    AX, ret+16(FP)
     RET
 
-TEXT ·SwapUint32Relaxed(SB), NOSPLIT, $0-20
+TEXT ·swapUint32Relaxed(SB), NOSPLIT, $0-20
     MOVQ    ptr+0(FP), BX
     MOVL    new+8(FP), AX
     XCHGL   AX, (BX)
     MOVL    AX, ret+16(FP)
     RET
 
-TEXT ·SwapInt64Relaxed(SB), NOSPLIT, $0-24
+TEXT ·swapInt64Relaxed(SB), NOSPLIT, $0-24
     MOVQ    ptr+0(FP), BX
     MOVQ    new+8(FP), AX
     XCHGQ   AX, (BX)
     MOVQ    AX, ret+16(FP)
     RET
 
-TEXT ·SwapUint64Relaxed(SB), NOSPLIT, $0-24
+TEXT ·swapUint64Relaxed(SB), NOSPLIT, $0-24
     MOVQ    ptr+0(FP), BX
     MOVQ    new+8(FP), AX
     XCHGQ   AX, (BX)
     MOVQ    AX, ret+16(FP)
     RET
 
-TEXT ·SwapUintptrRelaxed(SB), NOSPLIT, $0-24
+TEXT ·swapUintptrRelaxed(SB), NOSPLIT, $0-24
     MOVQ    ptr+0(FP), BX
     MOVQ    new+8(FP), AX
     XCHGQ   AX, (BX)
@@ -851,7 +851,7 @@ TEXT ·SwapUintptrRelaxed(SB), NOSPLIT, $0-24
     RET
 
 // XchgAcquire - XCHG + LFENCE
-TEXT ·SwapInt32Acquire(SB), NOSPLIT, $0-20
+TEXT ·swapInt32Acquire(SB), NOSPLIT, $0-20
     MOVQ    ptr+0(FP), BX
     MOVL    new+8(FP), AX
     XCHGL   AX, (BX)
@@ -859,7 +859,7 @@ TEXT ·SwapInt32Acquire(SB), NOSPLIT, $0-20
     MOVL    AX, ret+16(FP)
     RET
 
-TEXT ·SwapUint32Acquire(SB), NOSPLIT, $0-20
+TEXT ·swapUint32Acquire(SB), NOSPLIT, $0-20
     MOVQ    ptr+0(FP), BX
     MOVL    new+8(FP), AX
     XCHGL   AX, (BX)
@@ -867,7 +867,7 @@ TEXT ·SwapUint32Acquire(SB), NOSPLIT, $0-20
     MOVL    AX, ret+16(FP)
     RET
 
-TEXT ·SwapInt64Acquire(SB), NOSPLIT, $0-24
+TEXT ·swapInt64Acquire(SB), NOSPLIT, $0-24
     MOVQ    ptr+0(FP), BX
     MOVQ    new+8(FP), AX
     XCHGQ   AX, (BX)
@@ -875,7 +875,7 @@ TEXT ·SwapInt64Acquire(SB), NOSPLIT, $0-24
     MOVQ    AX, ret+16(FP)
     RET
 
-TEXT ·SwapUint64Acquire(SB), NOSPLIT, $0-24
+TEXT ·swapUint64Acquire(SB), NOSPLIT, $0-24
     MOVQ    ptr+0(FP), BX
     MOVQ    new+8(FP), AX
     XCHGQ   AX, (BX)
@@ -883,7 +883,7 @@ TEXT ·SwapUint64Acquire(SB), NOSPLIT, $0-24
     MOVQ    AX, ret+16(FP)
     RET
 
-TEXT ·SwapUintptrAcquire(SB), NOSPLIT, $0-24
+TEXT ·swapUintptrAcquire(SB), NOSPLIT, $0-24
     MOVQ    ptr+0(FP), BX
     MOVQ    new+8(FP), AX
     XCHGQ   AX, (BX)
@@ -892,7 +892,7 @@ TEXT ·SwapUintptrAcquire(SB), NOSPLIT, $0-24
     RET
 
 // XchgRelease - SFENCE + XCHG
-TEXT ·SwapInt32Release(SB), NOSPLIT, $0-20
+TEXT ·swapInt32Release(SB), NOSPLIT, $0-20
     MOVQ    ptr+0(FP), BX
     MOVL    new+8(FP), AX
     SFENCE
@@ -900,7 +900,7 @@ TEXT ·SwapInt32Release(SB), NOSPLIT, $0-20
     MOVL    AX, ret+16(FP)
     RET
 
-TEXT ·SwapUint32Release(SB), NOSPLIT, $0-20
+TEXT ·swapUint32Release(SB), NOSPLIT, $0-20
     MOVQ    ptr+0(FP), BX
     MOVL    new+8(FP), AX
     SFENCE
@@ -908,7 +908,7 @@ TEXT ·SwapUint32Release(SB), NOSPLIT, $0-20
     MOVL    AX, ret+16(FP)
     RET
 
-TEXT ·SwapInt64Release(SB), NOSPLIT, $0-24
+TEXT ·swapInt64Release(SB), NOSPLIT, $0-24
     MOVQ    ptr+0(FP), BX
     MOVQ    new+8(FP), AX
     SFENCE
@@ -916,7 +916,7 @@ TEXT ·SwapInt64Release(SB), NOSPLIT, $0-24
     MOVQ    AX, ret+16(FP)
     RET
 
-TEXT ·SwapUint64Release(SB), NOSPLIT, $0-24
+TEXT ·swapUint64Release(SB), NOSPLIT, $0-24
     MOVQ    ptr+0(FP), BX
     MOVQ    new+8(FP), AX
     SFENCE
@@ -924,7 +924,7 @@ TEXT ·SwapUint64Release(SB), NOSPLIT, $0-24
     MOVQ    AX, ret+16(FP)
     RET
 
-TEXT ·SwapUintptrRelease(SB), NOSPLIT, $0-24
+TEXT ·swapUintptrRelease(SB), NOSPLIT, $0-24
     MOVQ    ptr+0(FP), BX
     MOVQ    new+8(FP), AX
     SFENCE
@@ -933,7 +933,7 @@ TEXT ·SwapUintptrRelease(SB), NOSPLIT, $0-24
     RET
 
 // XchgAcqRel - full barrier
-TEXT ·SwapInt32AcqRel(SB), NOSPLIT, $0-20
+TEXT ·swapInt32AcqRel(SB), NOSPLIT, $0-20
     MOVQ    ptr+0(FP), BX
     MOVL    new+8(FP), AX
     MFENCE
@@ -942,7 +942,7 @@ TEXT ·SwapInt32AcqRel(SB), NOSPLIT, $0-20
     MOVL    AX, ret+16(FP)
     RET
 
-TEXT ·SwapUint32AcqRel(SB), NOSPLIT, $0-20
+TEXT ·swapUint32AcqRel(SB), NOSPLIT, $0-20
     MOVQ    ptr+0(FP), BX
     MOVL    new+8(FP), AX
     MFENCE
@@ -951,7 +951,7 @@ TEXT ·SwapUint32AcqRel(SB), NOSPLIT, $0-20
     MOVL    AX, ret+16(FP)
     RET
 
-TEXT ·SwapInt64AcqRel(SB), NOSPLIT, $0-24
+TEXT ·swapInt64AcqRel(SB), NOSPLIT, $0-24
     MOVQ    ptr+0(FP), BX
     MOVQ    new+8(FP), AX
     MFENCE
@@ -960,7 +960,7 @@ TEXT ·SwapInt64AcqRel(SB), NOSPLIT, $0-24
     MOVQ    AX, ret+16(FP)
     RET
 
-TEXT ·SwapUint64AcqRel(SB), NOSPLIT, $0-24
+TEXT ·swapUint64AcqRel(SB), NOSPLIT, $0-24
     MOVQ    ptr+0(FP), BX
     MOVQ    new+8(FP), AX
     MFENCE
@@ -969,7 +969,7 @@ TEXT ·SwapUint64AcqRel(SB), NOSPLIT, $0-24
     MOVQ    AX, ret+16(FP)
     RET
 
-TEXT ·SwapUintptrAcqRel(SB), NOSPLIT, $0-24
+TEXT ·swapUintptrAcqRel(SB), NOSPLIT, $0-24
     MOVQ    ptr+0(FP), BX
     MOVQ    new+8(FP), AX
     MFENCE
@@ -979,7 +979,7 @@ TEXT ·SwapUintptrAcqRel(SB), NOSPLIT, $0-24
     RET
 
 // XchgSeqCst - fill barrier + global order
-TEXT ·SwapInt32SeqCst(SB), NOSPLIT, $0-20
+TEXT ·swapInt32SeqCst(SB), NOSPLIT, $0-20
     MOVQ    ptr+0(FP), BX
     MOVL    new+8(FP), AX
     MFENCE
@@ -988,7 +988,7 @@ TEXT ·SwapInt32SeqCst(SB), NOSPLIT, $0-20
     MOVL    AX, ret+16(FP)
     RET
 
-TEXT ·SwapUint32SeqCst(SB), NOSPLIT, $0-20
+TEXT ·swapUint32SeqCst(SB), NOSPLIT, $0-20
     MOVQ    ptr+0(FP), BX
     MOVL    new+8(FP), AX
     MFENCE
@@ -997,7 +997,7 @@ TEXT ·SwapUint32SeqCst(SB), NOSPLIT, $0-20
     MOVL    AX, ret+16(FP)
     RET
 
-TEXT ·SwapInt64SeqCst(SB), NOSPLIT, $0-24
+TEXT ·swapInt64SeqCst(SB), NOSPLIT, $0-24
     MOVQ    ptr+0(FP), BX
     MOVQ    new+8(FP), AX
     MFENCE
@@ -1006,7 +1006,7 @@ TEXT ·SwapInt64SeqCst(SB), NOSPLIT, $0-24
     MOVQ    AX, ret+16(FP)
     RET
 
-TEXT ·SwapUint64SeqCst(SB), NOSPLIT, $0-24
+TEXT ·swapUint64SeqCst(SB), NOSPLIT, $0-24
     MOVQ    ptr+0(FP), BX
     MOVQ    new+8(FP), AX
     MFENCE
@@ -1015,7 +1015,7 @@ TEXT ·SwapUint64SeqCst(SB), NOSPLIT, $0-24
     MOVQ    AX, ret+16(FP)
     RET
 
-TEXT ·SwapUintptrSeqCst(SB), NOSPLIT, $0-24
+TEXT ·swapUintptrSeqCst(SB), NOSPLIT, $0-24
     MOVQ    ptr+0(FP), BX
     MOVQ    new+8(FP), AX
     MFENCE
@@ -1028,52 +1028,44 @@ TEXT ·SwapUintptrSeqCst(SB), NOSPLIT, $0-24
 // BITWISE OR operations
 // ============================================================
 
-// OrRelaxed - no barrier
-TEXT ·OrInt32Relaxed(SB), NOSPLIT, $0-12
+// orRelaxed - no barrier
+TEXT ·orInt32Relaxed(SB), NOSPLIT, $0-12
     MOVQ    ptr+0(FP), AX
     MOVL    val+8(FP), BX
     LOCK
     ORL     BX, (AX)
     RET
 
-TEXT ·OrUint32Relaxed(SB), NOSPLIT, $0-12
+TEXT ·orUint32Relaxed(SB), NOSPLIT, $0-12
     MOVQ    ptr+0(FP), AX
     MOVL    val+8(FP), BX
     LOCK
     ORL     BX, (AX)
     RET
 
-TEXT ·OrInt64Relaxed(SB), NOSPLIT, $0-16
+TEXT ·orInt64Relaxed(SB), NOSPLIT, $0-16
     MOVQ    ptr+0(FP), AX
     MOVQ    val+8(FP), BX
     LOCK
     ORQ     BX, (AX)
     RET
 
-TEXT ·OrUint64Relaxed(SB), NOSPLIT, $0-16
+TEXT ·orUint64Relaxed(SB), NOSPLIT, $0-16
     MOVQ    ptr+0(FP), AX
     MOVQ    val+8(FP), BX
     LOCK
     ORQ     BX, (AX)
     RET
 
-TEXT ·OrUintptrRelaxed(SB), NOSPLIT, $0-16
+TEXT ·orUintptrRelaxed(SB), NOSPLIT, $0-16
     MOVQ    ptr+0(FP), AX
     MOVQ    val+8(FP), BX
     LOCK
     ORQ     BX, (AX)
     RET
 
-// OrAcquire - OR + LFENCE
-TEXT ·OrInt32Acquire(SB), NOSPLIT, $0-12
-    MOVQ    ptr+0(FP), AX
-    MOVL    val+8(FP), BX
-    LOCK
-    ORL     BX, (AX)
-    LFENCE
-    RET
-
-TEXT ·OrUint32Acquire(SB), NOSPLIT, $0-12
+// orAcquire - OR + LFENCE
+TEXT ·orInt32Acquire(SB), NOSPLIT, $0-12
     MOVQ    ptr+0(FP), AX
     MOVL    val+8(FP), BX
     LOCK
@@ -1081,7 +1073,15 @@ TEXT ·OrUint32Acquire(SB), NOSPLIT, $0-12
     LFENCE
     RET
 
-TEXT ·OrInt64Acquire(SB), NOSPLIT, $0-16
+TEXT ·orUint32Acquire(SB), NOSPLIT, $0-12
+    MOVQ    ptr+0(FP), AX
+    MOVL    val+8(FP), BX
+    LOCK
+    ORL     BX, (AX)
+    LFENCE
+    RET
+
+TEXT ·orInt64Acquire(SB), NOSPLIT, $0-16
     MOVQ    ptr+0(FP), AX
     MOVQ    val+8(FP), BX
     LOCK
@@ -1089,7 +1089,7 @@ TEXT ·OrInt64Acquire(SB), NOSPLIT, $0-16
     LFENCE
     RET
 
-TEXT ·OrUint64Acquire(SB), NOSPLIT, $0-16
+TEXT ·orUint64Acquire(SB), NOSPLIT, $0-16
     MOVQ    ptr+0(FP), AX
     MOVQ    val+8(FP), BX
     LOCK
@@ -1097,7 +1097,7 @@ TEXT ·OrUint64Acquire(SB), NOSPLIT, $0-16
     LFENCE
     RET
 
-TEXT ·OrUintptrAcquire(SB), NOSPLIT, $0-16
+TEXT ·orUintptrAcquire(SB), NOSPLIT, $0-16
     MOVQ    ptr+0(FP), AX
     MOVQ    val+8(FP), BX
     LOCK
@@ -1105,8 +1105,8 @@ TEXT ·OrUintptrAcquire(SB), NOSPLIT, $0-16
     LFENCE
     RET
 
-// OrRelease - SFENCE + OR
-TEXT ·OrInt32Release(SB), NOSPLIT, $0-12
+// orRelease - SFENCE + OR
+TEXT ·orInt32Release(SB), NOSPLIT, $0-12
     MOVQ    ptr+0(FP), AX
     MOVL    val+8(FP), BX
     SFENCE
@@ -1114,7 +1114,7 @@ TEXT ·OrInt32Release(SB), NOSPLIT, $0-12
     ORL     BX, (AX)
     RET
 
-TEXT ·OrUint32Release(SB), NOSPLIT, $0-12
+TEXT ·orUint32Release(SB), NOSPLIT, $0-12
     MOVQ    ptr+0(FP), AX
     MOVL    val+8(FP), BX
     SFENCE
@@ -1122,7 +1122,7 @@ TEXT ·OrUint32Release(SB), NOSPLIT, $0-12
     ORL     BX, (AX)
     RET
 
-TEXT ·OrInt64Release(SB), NOSPLIT, $0-16
+TEXT ·orInt64Release(SB), NOSPLIT, $0-16
     MOVQ    ptr+0(FP), AX
     MOVQ    val+8(FP), BX
     SFENCE
@@ -1130,7 +1130,7 @@ TEXT ·OrInt64Release(SB), NOSPLIT, $0-16
     ORQ     BX, (AX)
     RET
 
-TEXT ·OrUint64Release(SB), NOSPLIT, $0-16
+TEXT ·orUint64Release(SB), NOSPLIT, $0-16
     MOVQ    ptr+0(FP), AX
     MOVQ    val+8(FP), BX
     SFENCE
@@ -1138,7 +1138,7 @@ TEXT ·OrUint64Release(SB), NOSPLIT, $0-16
     ORQ     BX, (AX)
     RET
 
-TEXT ·OrUintptrRelease(SB), NOSPLIT, $0-16
+TEXT ·orUintptrRelease(SB), NOSPLIT, $0-16
     MOVQ    ptr+0(FP), AX
     MOVQ    val+8(FP), BX
     SFENCE
@@ -1146,17 +1146,8 @@ TEXT ·OrUintptrRelease(SB), NOSPLIT, $0-16
     ORQ     BX, (AX)
     RET
 
-// OrSeqCst - full barrier
-TEXT ·OrInt32SeqCst(SB), NOSPLIT, $0-12
-    MOVQ    ptr+0(FP), AX
-    MOVL    val+8(FP), BX
-    MFENCE
-    LOCK
-    ORL     BX, (AX)
-    MFENCE
-    RET
-
-TEXT ·OrUint32SeqCst(SB), NOSPLIT, $0-12
+// orSeqCst - full barrier
+TEXT ·orInt32SeqCst(SB), NOSPLIT, $0-12
     MOVQ    ptr+0(FP), AX
     MOVL    val+8(FP), BX
     MFENCE
@@ -1165,7 +1156,16 @@ TEXT ·OrUint32SeqCst(SB), NOSPLIT, $0-12
     MFENCE
     RET
 
-TEXT ·OrInt64SeqCst(SB), NOSPLIT, $0-16
+TEXT ·orUint32SeqCst(SB), NOSPLIT, $0-12
+    MOVQ    ptr+0(FP), AX
+    MOVL    val+8(FP), BX
+    MFENCE
+    LOCK
+    ORL     BX, (AX)
+    MFENCE
+    RET
+
+TEXT ·orInt64SeqCst(SB), NOSPLIT, $0-16
     MOVQ    ptr+0(FP), AX
     MOVQ    val+8(FP), BX
     MFENCE
@@ -1174,7 +1174,7 @@ TEXT ·OrInt64SeqCst(SB), NOSPLIT, $0-16
     MFENCE
     RET
 
-TEXT ·OrUint64SeqCst(SB), NOSPLIT, $0-16
+TEXT ·orUint64SeqCst(SB), NOSPLIT, $0-16
     MOVQ    ptr+0(FP), AX
     MOVQ    val+8(FP), BX
     MFENCE
@@ -1183,7 +1183,7 @@ TEXT ·OrUint64SeqCst(SB), NOSPLIT, $0-16
     MFENCE
     RET
 
-TEXT ·OrUintptrSeqCst(SB), NOSPLIT, $0-16
+TEXT ·orUintptrSeqCst(SB), NOSPLIT, $0-16
     MOVQ    ptr+0(FP), AX
     MOVQ    val+8(FP), BX
     MFENCE
@@ -1192,8 +1192,8 @@ TEXT ·OrUintptrSeqCst(SB), NOSPLIT, $0-16
     MFENCE
     RET
 
-// Or32AcqRel full barrier with old value return
-TEXT ·Or32AcqRel(SB), NOSPLIT, $0-20
+// or32AcqRel full barrier with old value return
+TEXT ·or32AcqRel(SB), NOSPLIT, $0-20
     MOVQ    ptr+0(FP), BX
     MOVL    val+8(FP), CX
     MFENCE
@@ -1208,8 +1208,8 @@ casloop_or32_acqrel:
     MOVL    AX, ret+16(FP)
     RET
 
-// Or64AcqRel full barrier with old value return
-TEXT ·Or64AcqRel(SB), NOSPLIT, $0-24
+// or64AcqRel full barrier with old value return
+TEXT ·or64AcqRel(SB), NOSPLIT, $0-24
     MOVQ    ptr+0(FP), BX
     MOVQ    val+8(FP), CX
     MFENCE
@@ -1228,52 +1228,44 @@ casloop_or64_acqrel:
 // BITWISE AND operations
 // ============================================================
 
-// AndRelaxed - no barrier
-TEXT ·AndInt32Relaxed(SB), NOSPLIT, $0-12
+// andRelaxed - no barrier
+TEXT ·andInt32Relaxed(SB), NOSPLIT, $0-12
     MOVQ    ptr+0(FP), AX
     MOVL    val+8(FP), BX
     LOCK
     ANDL    BX, (AX)
     RET
 
-TEXT ·AndUint32Relaxed(SB), NOSPLIT, $0-12
+TEXT ·andUint32Relaxed(SB), NOSPLIT, $0-12
     MOVQ    ptr+0(FP), AX
     MOVL    val+8(FP), BX
     LOCK
     ANDL    BX, (AX)
     RET
 
-TEXT ·AndInt64Relaxed(SB), NOSPLIT, $0-16
+TEXT ·andInt64Relaxed(SB), NOSPLIT, $0-16
     MOVQ    ptr+0(FP), AX
     MOVQ    val+8(FP), BX
     LOCK
     ANDQ    BX, (AX)
     RET
 
-TEXT ·AndUint64Relaxed(SB), NOSPLIT, $0-16
+TEXT ·andUint64Relaxed(SB), NOSPLIT, $0-16
     MOVQ    ptr+0(FP), AX
     MOVQ    val+8(FP), BX
     LOCK
     ANDQ    BX, (AX)
     RET
 
-TEXT ·AndUintptrRelaxed(SB), NOSPLIT, $0-16
+TEXT ·andUintptrRelaxed(SB), NOSPLIT, $0-16
     MOVQ    ptr+0(FP), AX
     MOVQ    val+8(FP), BX
     LOCK
     ANDQ    BX, (AX)
     RET
 
-// AndAcquire - AND + LFENCE
-TEXT ·AndInt32Acquire(SB), NOSPLIT, $0-12
-    MOVQ    ptr+0(FP), AX
-    MOVL    val+8(FP), BX
-    LOCK
-    ANDL    BX, (AX)
-    LFENCE
-    RET
-
-TEXT ·AndUint32Acquire(SB), NOSPLIT, $0-12
+// andAcquire - AND + LFENCE
+TEXT ·andInt32Acquire(SB), NOSPLIT, $0-12
     MOVQ    ptr+0(FP), AX
     MOVL    val+8(FP), BX
     LOCK
@@ -1281,7 +1273,15 @@ TEXT ·AndUint32Acquire(SB), NOSPLIT, $0-12
     LFENCE
     RET
 
-TEXT ·AndInt64Acquire(SB), NOSPLIT, $0-16
+TEXT ·andUint32Acquire(SB), NOSPLIT, $0-12
+    MOVQ    ptr+0(FP), AX
+    MOVL    val+8(FP), BX
+    LOCK
+    ANDL    BX, (AX)
+    LFENCE
+    RET
+
+TEXT ·andInt64Acquire(SB), NOSPLIT, $0-16
     MOVQ    ptr+0(FP), AX
     MOVQ    val+8(FP), BX
     LOCK
@@ -1289,7 +1289,7 @@ TEXT ·AndInt64Acquire(SB), NOSPLIT, $0-16
     LFENCE
     RET
 
-TEXT ·AndUint64Acquire(SB), NOSPLIT, $0-16
+TEXT ·andUint64Acquire(SB), NOSPLIT, $0-16
     MOVQ    ptr+0(FP), AX
     MOVQ    val+8(FP), BX
     LOCK
@@ -1297,7 +1297,7 @@ TEXT ·AndUint64Acquire(SB), NOSPLIT, $0-16
     LFENCE
     RET
 
-TEXT ·AndUintptrAcquire(SB), NOSPLIT, $0-16
+TEXT ·andUintptrAcquire(SB), NOSPLIT, $0-16
     MOVQ    ptr+0(FP), AX
     MOVQ    val+8(FP), BX
     LOCK
@@ -1305,8 +1305,8 @@ TEXT ·AndUintptrAcquire(SB), NOSPLIT, $0-16
     LFENCE
     RET
 
-// AndRelease - SFENCE + AND
-TEXT ·AndInt32Release(SB), NOSPLIT, $0-12
+// andRelease - SFENCE + AND
+TEXT ·andInt32Release(SB), NOSPLIT, $0-12
     MOVQ    ptr+0(FP), AX
     MOVL    val+8(FP), BX
     SFENCE
@@ -1314,7 +1314,7 @@ TEXT ·AndInt32Release(SB), NOSPLIT, $0-12
     ANDL    BX, (AX)
     RET
 
-TEXT ·AndUint32Release(SB), NOSPLIT, $0-12
+TEXT ·andUint32Release(SB), NOSPLIT, $0-12
     MOVQ    ptr+0(FP), AX
     MOVL    val+8(FP), BX
     SFENCE
@@ -1322,7 +1322,7 @@ TEXT ·AndUint32Release(SB), NOSPLIT, $0-12
     ANDL    BX, (AX)
     RET
 
-TEXT ·AndInt64Release(SB), NOSPLIT, $0-16
+TEXT ·andInt64Release(SB), NOSPLIT, $0-16
     MOVQ    ptr+0(FP), AX
     MOVQ    val+8(FP), BX
     SFENCE
@@ -1330,7 +1330,7 @@ TEXT ·AndInt64Release(SB), NOSPLIT, $0-16
     ANDQ    BX, (AX)
     RET
 
-TEXT ·AndUint64Release(SB), NOSPLIT, $0-16
+TEXT ·andUint64Release(SB), NOSPLIT, $0-16
     MOVQ    ptr+0(FP), AX
     MOVQ    val+8(FP), BX
     SFENCE
@@ -1338,7 +1338,7 @@ TEXT ·AndUint64Release(SB), NOSPLIT, $0-16
     ANDQ    BX, (AX)
     RET
 
-TEXT ·AndUintptrRelease(SB), NOSPLIT, $0-16
+TEXT ·andUintptrRelease(SB), NOSPLIT, $0-16
     MOVQ    ptr+0(FP), AX
     MOVQ    val+8(FP), BX
     SFENCE
@@ -1346,17 +1346,8 @@ TEXT ·AndUintptrRelease(SB), NOSPLIT, $0-16
     ANDQ    BX, (AX)
     RET
 
-// AndSeqCst - full barrier
-TEXT ·AndInt32SeqCst(SB), NOSPLIT, $0-12
-    MOVQ    ptr+0(FP), AX
-    MOVL    val+8(FP), BX
-    MFENCE
-    LOCK
-    ANDL    BX, (AX)
-    MFENCE
-    RET
-
-TEXT ·AndUint32SeqCst(SB), NOSPLIT, $0-12
+// andSeqCst - full barrier
+TEXT ·andInt32SeqCst(SB), NOSPLIT, $0-12
     MOVQ    ptr+0(FP), AX
     MOVL    val+8(FP), BX
     MFENCE
@@ -1365,7 +1356,16 @@ TEXT ·AndUint32SeqCst(SB), NOSPLIT, $0-12
     MFENCE
     RET
 
-TEXT ·AndInt64SeqCst(SB), NOSPLIT, $0-16
+TEXT ·andUint32SeqCst(SB), NOSPLIT, $0-12
+    MOVQ    ptr+0(FP), AX
+    MOVL    val+8(FP), BX
+    MFENCE
+    LOCK
+    ANDL    BX, (AX)
+    MFENCE
+    RET
+
+TEXT ·andInt64SeqCst(SB), NOSPLIT, $0-16
     MOVQ    ptr+0(FP), AX
     MOVQ    val+8(FP), BX
     MFENCE
@@ -1374,7 +1374,7 @@ TEXT ·AndInt64SeqCst(SB), NOSPLIT, $0-16
     MFENCE
     RET
 
-TEXT ·AndUint64SeqCst(SB), NOSPLIT, $0-16
+TEXT ·andUint64SeqCst(SB), NOSPLIT, $0-16
     MOVQ    ptr+0(FP), AX
     MOVQ    val+8(FP), BX
     MFENCE
@@ -1383,7 +1383,7 @@ TEXT ·AndUint64SeqCst(SB), NOSPLIT, $0-16
     MFENCE
     RET
 
-TEXT ·AndUintptrSeqCst(SB), NOSPLIT, $0-16
+TEXT ·andUintptrSeqCst(SB), NOSPLIT, $0-16
     MOVQ    ptr+0(FP), AX
     MOVQ    val+8(FP), BX
     MFENCE
@@ -1392,8 +1392,8 @@ TEXT ·AndUintptrSeqCst(SB), NOSPLIT, $0-16
     MFENCE
     RET
 
-// And32AcqRel full brarrier with old value return
-TEXT ·And32AcqRel(SB), NOSPLIT, $0-20
+// and32AcqRel full brarrier with old value return
+TEXT ·and32AcqRel(SB), NOSPLIT, $0-20
     MOVQ    ptr+0(FP), BX
     MOVL    val+8(FP), CX
     MFENCE
@@ -1408,8 +1408,8 @@ casloop_and32_acqrel:
     MOVL    AX, ret+16(FP)
     RET
 
-// And64AcqRel full brarrier with old value return
-TEXT ·And64AcqRel(SB), NOSPLIT, $0-24
+// and64AcqRel full brarrier with old value return
+TEXT ·and64AcqRel(SB), NOSPLIT, $0-24
     MOVQ    ptr+0(FP), BX
     MOVQ    val+8(FP), CX
     MFENCE

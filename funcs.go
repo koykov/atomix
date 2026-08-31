@@ -90,78 +90,78 @@ func OrUintptr(addr *uintptr, mask uintptr, order MemoryOrderFull) (old uintptr)
 func LoadInt32(addr *int32, order MemoryOrderLoad) int32 {
 	switch order {
 	case relaxed{}:
-		return LoadInt32Relaxed(addr)
+		return loadInt32Relaxed(addr)
 	case acquire{}:
-		return LoadInt32Acquire(addr)
+		return loadInt32Acquire(addr)
 	case seqCst{}:
 		fallthrough
 	default:
-		return LoadInt32SeqCst(addr)
+		return loadInt32SeqCst(addr)
 	}
 }
 
 func LoadUint32(addr *uint32, order MemoryOrderLoad) uint32 {
 	switch order {
 	case relaxed{}:
-		return LoadUint32Relaxed(addr)
+		return loadUint32Relaxed(addr)
 	case acquire{}:
-		return LoadUint32Acquire(addr)
+		return loadUint32Acquire(addr)
 	case seqCst{}:
 		fallthrough
 	default:
-		return LoadUint32SeqCst(addr)
+		return loadUint32SeqCst(addr)
 	}
 }
 
 func LoadInt64(addr *int64, order MemoryOrderLoad) int64 {
 	switch order {
 	case relaxed{}:
-		return LoadInt64Relaxed(addr)
+		return loadInt64Relaxed(addr)
 	case acquire{}:
-		return LoadInt64Acquire(addr)
+		return loadInt64Acquire(addr)
 	case seqCst{}:
 		fallthrough
 	default:
-		return LoadInt64SeqCst(addr)
+		return loadInt64SeqCst(addr)
 	}
 }
 
 func LoadUint64(addr *uint64, order MemoryOrderLoad) uint64 {
 	switch order {
 	case relaxed{}:
-		return LoadUint64Relaxed(addr)
+		return loadUint64Relaxed(addr)
 	case acquire{}:
-		return LoadUint64Acquire(addr)
+		return loadUint64Acquire(addr)
 	case seqCst{}:
 		fallthrough
 	default:
-		return LoadUint64SeqCst(addr)
+		return loadUint64SeqCst(addr)
 	}
 }
 
 func LoadUintptr(addr *uintptr, order MemoryOrderLoad) uintptr {
 	switch order {
 	case relaxed{}:
-		return LoadUintptrRelaxed(addr)
+		return loadUintptrRelaxed(addr)
 	case acquire{}:
-		return LoadUintptrAcquire(addr)
+		return loadUintptrAcquire(addr)
 	case seqCst{}:
 		fallthrough
 	default:
-		return LoadUintptrSeqCst(addr)
+		return loadUintptrSeqCst(addr)
 	}
 }
 
 func LoadPointer(addr *unsafe.Pointer, order MemoryOrderLoad) unsafe.Pointer {
 	switch order {
 	case relaxed{}:
-		return LoadPointerRelaxed(addr)
+		return loadPointerRelaxed(addr)
 	case acquire{}:
-		return LoadPointerAcquire(addr)
+		return loadPointerAcquire(addr)
 	case seqCst{}:
 		fallthrough
 	default:
-		return LoadPointerSeqCst(addr)
+		return loadPointerSeqCst(addr)
 	}
 }
 
