@@ -1,12 +1,47 @@
 package atomix
 
-type MemoryOrder uint8
+type (
+	MemoryOrderLoad interface {
+		load()
+	}
+	MemoryOrderStore interface {
+		store()
+	}
+	MemoryOrderFull interface {
+		MemoryOrderLoad
+		MemoryOrderStore
+	}
+	MemoryOrderNoReturn interface {
+		noret()
+	}
+	MemoryOrderReturn interface {
+		ret()
+	}
+)
 
-const (
-	MemoryOrderRelaxed MemoryOrder = iota
-	MemoryOrderAcquire
-	MemoryOrderConsume // deprecated, fallthrough to MemoryOrderSeqCst
-	MemoryOrderRelease
-	MemoryOrderAcqRel
-	MemoryOrderSeqCst
+type (
+	relaxed struct{}
+	acquire struct{}
+	release struct{}
+	acqRel  struct{}
+	seqCst  struct{}
+)
+
+func (relaxed) load() {}
+func (acquire) load() {}
+func (seqCst) load()  {}
+
+func (relaxed) store() {}
+func (release) store() {}
+func (seqCst) store()  {}
+
+func (acqRel) noret() {}
+func (acqRel) ret()   {}
+
+var (
+	MemoryOrderRelaxed = relaxed{}
+	MemoryOrderAcquire = acquire{}
+	MemoryOrderRelease = release{}
+	MemoryOrderAcqRel  = acqRel{}
+	MemoryOrderSeqCst  = seqCst{}
 )
