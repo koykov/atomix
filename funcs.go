@@ -5,87 +5,158 @@ import (
 	"unsafe"
 )
 
-func SwapInt32(addr *int32, new int32, order MemoryOrderFull) (old int32) {
+func SwapInt32(addr *int32, new int32, order MemoryOrderAll) int32 {
+	switch order {
+	case relaxed{}:
+		return swapInt32Relaxed(addr, new)
+	case acquire{}:
+		return swapInt32Acquire(addr, new)
+	case release{}:
+		return swapInt32Release(addr, new)
+	case acqRel{}:
+		return swapInt32AcqRel(addr, new)
+	case seqCst{}:
+		fallthrough
+	default:
+		return swapInt32SeqCst(addr, new)
+	}
+}
+
+func SwapUint32(addr *uint32, new uint32, order MemoryOrderAll) uint32 {
+	switch order {
+	case relaxed{}:
+		return swapUint32Relaxed(addr, new)
+	case acquire{}:
+		return swapUint32Acquire(addr, new)
+	case release{}:
+		return swapUint32Release(addr, new)
+	case acqRel{}:
+		return swapUint32AcqRel(addr, new)
+	case seqCst{}:
+		fallthrough
+	default:
+		return swapUint32SeqCst(addr, new)
+	}
+}
+
+func SwapInt64(addr *int64, new int64, order MemoryOrderAll) int64 {
+	switch order {
+	case relaxed{}:
+		return swapInt64Relaxed(addr, new)
+	case acquire{}:
+		return swapInt64Acquire(addr, new)
+	case release{}:
+		return swapInt64Release(addr, new)
+	case acqRel{}:
+		return swapInt64AcqRel(addr, new)
+	case seqCst{}:
+		fallthrough
+	default:
+		return swapInt64SeqCst(addr, new)
+	}
+}
+
+func SwapUint64(addr *uint64, new uint64, order MemoryOrderAll) uint64 {
+	switch order {
+	case relaxed{}:
+		return swapUint64Relaxed(addr, new)
+	case acquire{}:
+		return swapUint64Acquire(addr, new)
+	case release{}:
+		return swapUint64Release(addr, new)
+	case acqRel{}:
+		return swapUint64AcqRel(addr, new)
+	case seqCst{}:
+		fallthrough
+	default:
+		return swapUint64SeqCst(addr, new)
+	}
+}
+
+func SwapUintptr(addr *uintptr, new uintptr, order MemoryOrderAll) uintptr {
+	switch order {
+	case relaxed{}:
+		return swapUintptrRelaxed(addr, new)
+	case acquire{}:
+		return swapUintptrAcquire(addr, new)
+	case release{}:
+		return swapUintptrRelease(addr, new)
+	case acqRel{}:
+		return swapUintptrAcqRel(addr, new)
+	case seqCst{}:
+		fallthrough
+	default:
+		return swapUintptrSeqCst(addr, new)
+	}
+}
+
+func SwapPointer(addr *unsafe.Pointer, new unsafe.Pointer, _ MemoryOrderAll) unsafe.Pointer {
+	// GC requires write barrier for storing pointers there is no way to check in non-runtime code is GC active or not.
+	// Thus use native atomic.StorePointer without considering order.
+	return atomic.SwapPointer(addr, new)
+}
+
+func CompareAndSwapInt32(addr *int32, old, new int32, order MemoryOrderAll) (swapped bool) {
 	// todo implement me
 	return
 }
 
-func SwapUint32(addr *uint32, new uint32, order MemoryOrderFull) (old uint32) {
+func CompareAndSwapUint32(addr *uint32, old, new uint32, order MemoryOrderAll) (swapped bool) {
 	// todo implement me
 	return
 }
 
-func SwapUintptr(addr *uintptr, new uintptr, order MemoryOrderFull) (old uintptr) {
+func CompareAndSwapUintptr(addr *uintptr, old, new uintptr, order MemoryOrderAll) (swapped bool) {
 	// todo implement me
 	return
 }
 
-func SwapPointer(addr *unsafe.Pointer, new unsafe.Pointer, order MemoryOrderFull) (old unsafe.Pointer) {
+func CompareAndSwapPointer(addr *unsafe.Pointer, old, new unsafe.Pointer, order MemoryOrderAll) (swapped bool) {
 	// todo implement me
 	return
 }
 
-func CompareAndSwapInt32(addr *int32, old, new int32, order MemoryOrderFull) (swapped bool) {
+func AddInt32(addr *int32, delta int32, order MemoryOrderAll) (new int32) {
 	// todo implement me
 	return
 }
 
-func CompareAndSwapUint32(addr *uint32, old, new uint32, order MemoryOrderFull) (swapped bool) {
+func AddUint32(addr *uint32, delta uint32, order MemoryOrderAll) (new uint32) {
 	// todo implement me
 	return
 }
 
-func CompareAndSwapUintptr(addr *uintptr, old, new uintptr, order MemoryOrderFull) (swapped bool) {
+func AddUintptr(addr *uintptr, delta uintptr, order MemoryOrderAll) (new uintptr) {
 	// todo implement me
 	return
 }
 
-func CompareAndSwapPointer(addr *unsafe.Pointer, old, new unsafe.Pointer, order MemoryOrderFull) (swapped bool) {
+func AndInt32(addr *int32, mask int32, order MemoryOrderAll) (old int32) {
 	// todo implement me
 	return
 }
 
-func AddInt32(addr *int32, delta int32, order MemoryOrderFull) (new int32) {
+func AndUint32(addr *uint32, mask uint32, order MemoryOrderAll) (old uint32) {
 	// todo implement me
 	return
 }
 
-func AddUint32(addr *uint32, delta uint32, order MemoryOrderFull) (new uint32) {
+func AndUintptr(addr *uintptr, mask uintptr, order MemoryOrderAll) (old uintptr) {
 	// todo implement me
 	return
 }
 
-func AddUintptr(addr *uintptr, delta uintptr, order MemoryOrderFull) (new uintptr) {
+func OrInt32(addr *int32, mask int32, order MemoryOrderAll) (old int32) {
 	// todo implement me
 	return
 }
 
-func AndInt32(addr *int32, mask int32, order MemoryOrderFull) (old int32) {
+func OrUint32(addr *uint32, mask uint32, order MemoryOrderAll) (old uint32) {
 	// todo implement me
 	return
 }
 
-func AndUint32(addr *uint32, mask uint32, order MemoryOrderFull) (old uint32) {
-	// todo implement me
-	return
-}
-
-func AndUintptr(addr *uintptr, mask uintptr, order MemoryOrderFull) (old uintptr) {
-	// todo implement me
-	return
-}
-
-func OrInt32(addr *int32, mask int32, order MemoryOrderFull) (old int32) {
-	// todo implement me
-	return
-}
-
-func OrUint32(addr *uint32, mask uint32, order MemoryOrderFull) (old uint32) {
-	// todo implement me
-	return
-}
-
-func OrUintptr(addr *uintptr, mask uintptr, order MemoryOrderFull) (old uintptr) {
+func OrUintptr(addr *uintptr, mask uintptr, order MemoryOrderAll) (old uintptr) {
 	// todo implement me
 	return
 }

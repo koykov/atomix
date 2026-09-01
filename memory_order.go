@@ -7,9 +7,8 @@ type (
 	MemoryOrderStore interface {
 		store()
 	}
-	MemoryOrderFull interface {
-		MemoryOrderLoad
-		MemoryOrderStore
+	MemoryOrderAll interface {
+		all()
 	}
 	MemoryOrderNoReturn interface {
 		noret()
@@ -37,6 +36,12 @@ func (seqCst) store()  {}
 
 func (acqRel) noret() {}
 func (acqRel) ret()   {}
+
+func (relaxed) all() {}
+func (acquire) all() {}
+func (release) all() {}
+func (acqRel) all()  {}
+func (seqCst) all()  {}
 
 var (
 	MemoryOrderRelaxed = relaxed{}
