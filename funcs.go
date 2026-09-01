@@ -96,24 +96,95 @@ func SwapPointer(addr *unsafe.Pointer, new unsafe.Pointer, _ MemoryOrderAll) uns
 	return atomic.SwapPointer(addr, new)
 }
 
-func CompareAndSwapInt32(addr *int32, old, new int32, order MemoryOrderAll) (swapped bool) {
-	// todo implement me
-	return
+func CompareAndSwapInt32(addr *int32, old, new int32, order MemoryOrderAll) bool {
+	switch order {
+	case relaxed{}:
+		return casInt32Relaxed(addr, old, new)
+	case acquire{}:
+		return casInt32Acquire(addr, old, new)
+	case release{}:
+		return casInt32Release(addr, old, new)
+	case acqRel{}:
+		return casInt32AcqRel(addr, old, new)
+	case seqCst{}:
+		fallthrough
+	default:
+		return casInt32SeqCst(addr, old, new)
+	}
 }
 
 func CompareAndSwapUint32(addr *uint32, old, new uint32, order MemoryOrderAll) (swapped bool) {
-	// todo implement me
-	return
+	switch order {
+	case relaxed{}:
+		return casUint32Relaxed(addr, old, new)
+	case acquire{}:
+		return casUint32Acquire(addr, old, new)
+	case release{}:
+		return casUint32Release(addr, old, new)
+	case acqRel{}:
+		return casUint32AcqRel(addr, old, new)
+	case seqCst{}:
+		fallthrough
+	default:
+		return casUint32SeqCst(addr, old, new)
+	}
+}
+
+func CompareAndSwapInt64(addr *int64, old, new int64, order MemoryOrderAll) bool {
+	switch order {
+	case relaxed{}:
+		return casInt64Relaxed(addr, old, new)
+	case acquire{}:
+		return casInt64Acquire(addr, old, new)
+	case release{}:
+		return casInt64Release(addr, old, new)
+	case acqRel{}:
+		return casInt64AcqRel(addr, old, new)
+	case seqCst{}:
+		fallthrough
+	default:
+		return casInt64SeqCst(addr, old, new)
+	}
+}
+
+func CompareAndSwapUint64(addr *uint64, old, new uint64, order MemoryOrderAll) (swapped bool) {
+	switch order {
+	case relaxed{}:
+		return casUint64Relaxed(addr, old, new)
+	case acquire{}:
+		return casUint64Acquire(addr, old, new)
+	case release{}:
+		return casUint64Release(addr, old, new)
+	case acqRel{}:
+		return casUint64AcqRel(addr, old, new)
+	case seqCst{}:
+		fallthrough
+	default:
+		return casUint64SeqCst(addr, old, new)
+	}
 }
 
 func CompareAndSwapUintptr(addr *uintptr, old, new uintptr, order MemoryOrderAll) (swapped bool) {
-	// todo implement me
-	return
+	switch order {
+	case relaxed{}:
+		return casUintptrRelaxed(addr, old, new)
+	case acquire{}:
+		return casUintptrAcquire(addr, old, new)
+	case release{}:
+		return casUintptrRelease(addr, old, new)
+	case acqRel{}:
+		return casUintptrAcqRel(addr, old, new)
+	case seqCst{}:
+		fallthrough
+	default:
+		return casUintptrSeqCst(addr, old, new)
+	}
 }
 
-func CompareAndSwapPointer(addr *unsafe.Pointer, old, new unsafe.Pointer, order MemoryOrderAll) (swapped bool) {
-	// todo implement me
-	return
+func CompareAndSwapPointer(addr *unsafe.Pointer, old, new unsafe.Pointer, _ MemoryOrderAll) (swapped bool) {
+	// GC requires write barrier for storing pointers there is no way to check in non-runtime code is GC active or not.
+	// Thus use native atomic.StorePointer without considering order.
+	return atomic.CompareAndSwapPointer(addr, old, new)
 }
 
 func AddInt32(addr *int32, delta int32, order MemoryOrderAll) (new int32) {
