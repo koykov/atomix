@@ -1,6 +1,9 @@
 package atomix
 
-import "unsafe"
+import (
+	"sync/atomic"
+	"unsafe"
+)
 
 func SwapInt32(addr *int32, new int32, order MemoryOrderFull) (old int32) {
 	// todo implement me
@@ -166,25 +169,72 @@ func LoadPointer(addr *unsafe.Pointer, order MemoryOrderLoad) unsafe.Pointer {
 }
 
 func StoreInt32(addr *int32, val int32, order MemoryOrderStore) {
-	// todo implement me
+	switch order {
+	case relaxed{}:
+		storeInt32Relaxed(addr, val)
+	case release{}:
+		storeInt32Release(addr, val)
+	case seqCst{}:
+		fallthrough
+	default:
+		storeInt32SeqCst(addr, val)
+	}
 }
 
 func StoreUint32(addr *uint32, val uint32, order MemoryOrderStore) {
-	// todo implement me
+	switch order {
+	case relaxed{}:
+		storeUint32Relaxed(addr, val)
+	case release{}:
+		storeUint32Release(addr, val)
+	case seqCst{}:
+		fallthrough
+	default:
+		storeUint32SeqCst(addr, val)
+	}
 }
 
 func StoreInt64(addr *int64, val int64, order MemoryOrderStore) {
-	// todo implement me
+	switch order {
+	case relaxed{}:
+		storeInt64Relaxed(addr, val)
+	case release{}:
+		storeInt64Release(addr, val)
+	case seqCst{}:
+		fallthrough
+	default:
+		storeInt64SeqCst(addr, val)
+	}
 }
 
 func StoreUint64(addr *uint64, val uint64, order MemoryOrderStore) {
-	// todo implement me
+	switch order {
+	case relaxed{}:
+		storeUint64Relaxed(addr, val)
+	case release{}:
+		storeUint64Release(addr, val)
+	case seqCst{}:
+		fallthrough
+	default:
+		storeUint64SeqCst(addr, val)
+	}
 }
 
 func StoreUintptr(addr *uintptr, val uintptr, order MemoryOrderStore) {
-	// todo implement me
+	switch order {
+	case relaxed{}:
+		storeUintptrRelaxed(addr, val)
+	case release{}:
+		storeUintptrRelease(addr, val)
+	case seqCst{}:
+		fallthrough
+	default:
+		storeUintptrSeqCst(addr, val)
+	}
 }
 
-func StorePointer(addr *unsafe.Pointer, val unsafe.Pointer, order MemoryOrderStore) {
-	// todo implement me
+func StorePointer(addr *unsafe.Pointer, val unsafe.Pointer, _ MemoryOrderStore) {
+	// GC requires write barrier for storing pointers there is no way to check in non-runtime code is GC active or not.
+	// Thus use native atomic.StorePointer without considering order.
+	atomic.StorePointer(addr, val)
 }
