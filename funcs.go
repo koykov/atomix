@@ -187,19 +187,89 @@ func CompareAndSwapPointer(addr *unsafe.Pointer, old, new unsafe.Pointer, _ Memo
 	return atomic.CompareAndSwapPointer(addr, old, new)
 }
 
-func AddInt32(addr *int32, delta int32, order MemoryOrderAll) (new int32) {
-	// todo implement me
-	return
+func AddInt32(addr *int32, delta int32, order MemoryOrderAll) int32 {
+	switch order {
+	case relaxed{}:
+		return addInt32Relaxed(addr, delta)
+	case acquire{}:
+		return addInt32Acquire(addr, delta)
+	case release{}:
+		return addInt32Release(addr, delta)
+	case acqRel{}:
+		return addInt32AcqRel(addr, delta)
+	case seqCst{}:
+		fallthrough
+	default:
+		return addInt32SeqCst(addr, delta)
+	}
 }
 
-func AddUint32(addr *uint32, delta uint32, order MemoryOrderAll) (new uint32) {
-	// todo implement me
-	return
+func AddUint32(addr *uint32, delta uint32, order MemoryOrderAll) uint32 {
+	switch order {
+	case relaxed{}:
+		return addUint32Relaxed(addr, delta)
+	case acquire{}:
+		return addUint32Acquire(addr, delta)
+	case release{}:
+		return addUint32Release(addr, delta)
+	case acqRel{}:
+		return addUint32AcqRel(addr, delta)
+	case seqCst{}:
+		fallthrough
+	default:
+		return addUint32SeqCst(addr, delta)
+	}
 }
 
-func AddUintptr(addr *uintptr, delta uintptr, order MemoryOrderAll) (new uintptr) {
-	// todo implement me
-	return
+func AddInt64(addr *int64, delta int64, order MemoryOrderAll) int64 {
+	switch order {
+	case relaxed{}:
+		return addInt64Relaxed(addr, delta)
+	case acquire{}:
+		return addInt64Acquire(addr, delta)
+	case release{}:
+		return addInt64Release(addr, delta)
+	case acqRel{}:
+		return addInt64AcqRel(addr, delta)
+	case seqCst{}:
+		fallthrough
+	default:
+		return addInt64SeqCst(addr, delta)
+	}
+}
+
+func AddUint64(addr *uint64, delta uint64, order MemoryOrderAll) uint64 {
+	switch order {
+	case relaxed{}:
+		return addUint64Relaxed(addr, delta)
+	case acquire{}:
+		return addUint64Acquire(addr, delta)
+	case release{}:
+		return addUint64Release(addr, delta)
+	case acqRel{}:
+		return addUint64AcqRel(addr, delta)
+	case seqCst{}:
+		fallthrough
+	default:
+		return addUint64SeqCst(addr, delta)
+	}
+}
+
+func AddUintptr(addr *uintptr, delta uintptr, order MemoryOrderAll) uintptr {
+	switch order {
+	case relaxed{}:
+		return addUintptrRelaxed(addr, delta)
+	case acquire{}:
+		return addUintptrAcquire(addr, delta)
+	case release{}:
+		return addUintptrRelease(addr, delta)
+	case acqRel{}:
+		return addUintptrAcqRel(addr, delta)
+	case seqCst{}:
+		fallthrough
+	default:
+		return addUintptrSeqCst(addr, delta)
+	}
 }
 
 func AndInt32(addr *int32, mask int32, order MemoryOrderAll) (old int32) {
