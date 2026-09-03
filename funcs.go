@@ -272,19 +272,89 @@ func AddUintptr(addr *uintptr, delta uintptr, order MemoryOrderAll) uintptr {
 	}
 }
 
-func AndInt32(addr *int32, mask int32, order MemoryOrderAll) (old int32) {
-	// todo implement me
-	return
+func AndInt32(addr *int32, mask int32, order MemoryOrderAll) int32 {
+	switch order {
+	case relaxed{}:
+		return andInt32RelaxedReturn(addr, mask)
+	case acquire{}:
+		return andInt32AcquireReturn(addr, mask)
+	case release{}:
+		return andInt32ReleaseReturn(addr, mask)
+	case acqRel{}:
+		return andInt32ReleaseReturn(addr, mask)
+	case seqCst{}:
+		fallthrough
+	default:
+		return andInt32SeqCstReturn(addr, mask)
+	}
 }
 
-func AndUint32(addr *uint32, mask uint32, order MemoryOrderAll) (old uint32) {
-	// todo implement me
-	return
+func AndUint32(addr *uint32, mask uint32, order MemoryOrderAll) uint32 {
+	switch order {
+	case relaxed{}:
+		return andUint32RelaxedReturn(addr, mask)
+	case acquire{}:
+		return andUint32AcquireReturn(addr, mask)
+	case release{}:
+		return andUint32ReleaseReturn(addr, mask)
+	case acqRel{}:
+		return andUint32ReleaseReturn(addr, mask)
+	case seqCst{}:
+		fallthrough
+	default:
+		return andUint32SeqCstReturn(addr, mask)
+	}
 }
 
-func AndUintptr(addr *uintptr, mask uintptr, order MemoryOrderAll) (old uintptr) {
-	// todo implement me
-	return
+func AndInt64(addr *int64, mask int64, order MemoryOrderAll) int64 {
+	switch order {
+	case relaxed{}:
+		return andInt64RelaxedReturn(addr, mask)
+	case acquire{}:
+		return andInt64AcquireReturn(addr, mask)
+	case release{}:
+		return andInt64ReleaseReturn(addr, mask)
+	case acqRel{}:
+		return andInt64ReleaseReturn(addr, mask)
+	case seqCst{}:
+		fallthrough
+	default:
+		return andInt64SeqCstReturn(addr, mask)
+	}
+}
+
+func AndUint64(addr *uint64, mask uint64, order MemoryOrderAll) uint64 {
+	switch order {
+	case relaxed{}:
+		return andUint64RelaxedReturn(addr, mask)
+	case acquire{}:
+		return andUint64AcquireReturn(addr, mask)
+	case release{}:
+		return andUint64ReleaseReturn(addr, mask)
+	case acqRel{}:
+		return andUint64ReleaseReturn(addr, mask)
+	case seqCst{}:
+		fallthrough
+	default:
+		return andUint64SeqCstReturn(addr, mask)
+	}
+}
+
+func AndUintptr(addr *uintptr, mask uintptr, order MemoryOrderAll) uintptr {
+	switch order {
+	case relaxed{}:
+		return andUintptrRelaxedReturn(addr, mask)
+	case acquire{}:
+		return andUintptrAcquireReturn(addr, mask)
+	case release{}:
+		return andUintptrReleaseReturn(addr, mask)
+	case acqRel{}:
+		return andUintptrReleaseReturn(addr, mask)
+	case seqCst{}:
+		fallthrough
+	default:
+		return andUintptrSeqCstReturn(addr, mask)
+	}
 }
 
 func OrInt32(addr *int32, mask int32, order MemoryOrderAll) (old int32) {

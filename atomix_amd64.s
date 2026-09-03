@@ -1025,7 +1025,7 @@ TEXT ·swapUintptrSeqCst(SB), NOSPLIT, $0-24
     RET
 
 // ============================================================
-// BITWISE OR operations
+// OR operations (no return value)
 // ============================================================
 
 // orRelaxed - no barrier
@@ -1064,7 +1064,7 @@ TEXT ·orUintptrRelaxed(SB), NOSPLIT, $0-16
     ORQ     BX, (AX)
     RET
 
-// orAcquire - OR + LFENCE
+// orAcquire - LOCK OR + LFENCE (acquire barrier after)
 TEXT ·orInt32Acquire(SB), NOSPLIT, $0-12
     MOVQ    ptr+0(FP), AX
     MOVL    val+8(FP), BX
@@ -1105,7 +1105,7 @@ TEXT ·orUintptrAcquire(SB), NOSPLIT, $0-16
     LFENCE
     RET
 
-// orRelease - SFENCE + OR
+// orRelease - SFENCE before + LOCK OR (release barrier before)
 TEXT ·orInt32Release(SB), NOSPLIT, $0-12
     MOVQ    ptr+0(FP), AX
     MOVL    val+8(FP), BX
@@ -1146,7 +1146,53 @@ TEXT ·orUintptrRelease(SB), NOSPLIT, $0-16
     ORQ     BX, (AX)
     RET
 
-// orSeqCst - full barrier
+// orAcqRel - full barrier (both directions) - MFENCE + LOCK OR + MFENCE
+TEXT ·orInt32AcqRel(SB), NOSPLIT, $0-12
+    MOVQ    ptr+0(FP), AX
+    MOVL    val+8(FP), BX
+    MFENCE
+    LOCK
+    ORL     BX, (AX)
+    MFENCE
+    RET
+
+TEXT ·orUint32AcqRel(SB), NOSPLIT, $0-12
+    MOVQ    ptr+0(FP), AX
+    MOVL    val+8(FP), BX
+    MFENCE
+    LOCK
+    ORL     BX, (AX)
+    MFENCE
+    RET
+
+TEXT ·orInt64AcqRel(SB), NOSPLIT, $0-16
+    MOVQ    ptr+0(FP), AX
+    MOVQ    val+8(FP), BX
+    MFENCE
+    LOCK
+    ORQ     BX, (AX)
+    MFENCE
+    RET
+
+TEXT ·orUint64AcqRel(SB), NOSPLIT, $0-16
+    MOVQ    ptr+0(FP), AX
+    MOVQ    val+8(FP), BX
+    MFENCE
+    LOCK
+    ORQ     BX, (AX)
+    MFENCE
+    RET
+
+TEXT ·orUintptrAcqRel(SB), NOSPLIT, $0-16
+    MOVQ    ptr+0(FP), AX
+    MOVQ    val+8(FP), BX
+    MFENCE
+    LOCK
+    ORQ     BX, (AX)
+    MFENCE
+    RET
+
+// orSeqCst - full barrier (полный + глобальный порядок)
 TEXT ·orInt32SeqCst(SB), NOSPLIT, $0-12
     MOVQ    ptr+0(FP), AX
     MOVL    val+8(FP), BX
@@ -1192,40 +1238,8 @@ TEXT ·orUintptrSeqCst(SB), NOSPLIT, $0-16
     MFENCE
     RET
 
-// or32AcqRel full barrier with old value return
-TEXT ·or32AcqRel(SB), NOSPLIT, $0-20
-    MOVQ    ptr+0(FP), BX
-    MOVL    val+8(FP), CX
-    MFENCE
-casloop_or32_acqrel:
-    MOVL    CX, DX
-    MOVL    (BX), AX
-    ORL     AX, DX
-    LOCK
-    CMPXCHGL    DX, (BX)
-    JNZ     casloop_or32_acqrel
-    MFENCE
-    MOVL    AX, ret+16(FP)
-    RET
-
-// or64AcqRel full barrier with old value return
-TEXT ·or64AcqRel(SB), NOSPLIT, $0-24
-    MOVQ    ptr+0(FP), BX
-    MOVQ    val+8(FP), CX
-    MFENCE
-casloop_or64_acqrel:
-    MOVQ    CX, DX
-    MOVQ    (BX), AX
-    ORQ     AX, DX
-    LOCK
-    CMPXCHGQ    DX, (BX)
-    JNZ     casloop_or64_acqrel
-    MFENCE
-    MOVQ    AX, ret+16(FP)
-    RET
-
 // ============================================================
-// BITWISE AND operations
+// AND operations (no return value)
 // ============================================================
 
 // andRelaxed - no barrier
@@ -1264,7 +1278,7 @@ TEXT ·andUintptrRelaxed(SB), NOSPLIT, $0-16
     ANDQ    BX, (AX)
     RET
 
-// andAcquire - AND + LFENCE
+// andAcquire - LOCK AND + LFENCE
 TEXT ·andInt32Acquire(SB), NOSPLIT, $0-12
     MOVQ    ptr+0(FP), AX
     MOVL    val+8(FP), BX
@@ -1305,7 +1319,7 @@ TEXT ·andUintptrAcquire(SB), NOSPLIT, $0-16
     LFENCE
     RET
 
-// andRelease - SFENCE + AND
+// andRelease - SFENCE + LOCK AND
 TEXT ·andInt32Release(SB), NOSPLIT, $0-12
     MOVQ    ptr+0(FP), AX
     MOVL    val+8(FP), BX
@@ -1346,7 +1360,53 @@ TEXT ·andUintptrRelease(SB), NOSPLIT, $0-16
     ANDQ    BX, (AX)
     RET
 
-// andSeqCst - full barrier
+// andAcqRel - full barrier
+TEXT ·andInt32AcqRel(SB), NOSPLIT, $0-12
+    MOVQ    ptr+0(FP), AX
+    MOVL    val+8(FP), BX
+    MFENCE
+    LOCK
+    ANDL    BX, (AX)
+    MFENCE
+    RET
+
+TEXT ·andUint32AcqRel(SB), NOSPLIT, $0-12
+    MOVQ    ptr+0(FP), AX
+    MOVL    val+8(FP), BX
+    MFENCE
+    LOCK
+    ANDL    BX, (AX)
+    MFENCE
+    RET
+
+TEXT ·andInt64AcqRel(SB), NOSPLIT, $0-16
+    MOVQ    ptr+0(FP), AX
+    MOVQ    val+8(FP), BX
+    MFENCE
+    LOCK
+    ANDQ    BX, (AX)
+    MFENCE
+    RET
+
+TEXT ·andUint64AcqRel(SB), NOSPLIT, $0-16
+    MOVQ    ptr+0(FP), AX
+    MOVQ    val+8(FP), BX
+    MFENCE
+    LOCK
+    ANDQ    BX, (AX)
+    MFENCE
+    RET
+
+TEXT ·andUintptrAcqRel(SB), NOSPLIT, $0-16
+    MOVQ    ptr+0(FP), AX
+    MOVQ    val+8(FP), BX
+    MFENCE
+    LOCK
+    ANDQ    BX, (AX)
+    MFENCE
+    RET
+
+// andSeqCst - full barrier + global order
 TEXT ·andInt32SeqCst(SB), NOSPLIT, $0-12
     MOVQ    ptr+0(FP), AX
     MOVL    val+8(FP), BX
@@ -1392,8 +1452,519 @@ TEXT ·andUintptrSeqCst(SB), NOSPLIT, $0-16
     MFENCE
     RET
 
-// and32AcqRel full brarrier with old value return
-TEXT ·and32AcqRel(SB), NOSPLIT, $0-20
+// ============================================================
+// OR operations with return value (old value)
+// ============================================================
+
+TEXT ·orInt32RelaxedReturn(SB), NOSPLIT, $0-20
+    MOVQ    ptr+0(FP), BX
+    MOVL    val+8(FP), CX
+casloop_or32_relaxed:
+    MOVL    CX, DX
+    MOVL    (BX), AX
+    ORL     AX, DX
+    LOCK
+    CMPXCHGL    DX, (BX)
+    JNZ     casloop_or32_relaxed
+    MOVL    AX, ret+16(FP)
+    RET
+
+TEXT ·orUint32RelaxedReturn(SB), NOSPLIT, $0-20
+    MOVQ    ptr+0(FP), BX
+    MOVL    val+8(FP), CX
+casloop_or32_relaxed_u:
+    MOVL    CX, DX
+    MOVL    (BX), AX
+    ORL     AX, DX
+    LOCK
+    CMPXCHGL    DX, (BX)
+    JNZ     casloop_or32_relaxed_u
+    MOVL    AX, ret+16(FP)
+    RET
+
+TEXT ·orInt64RelaxedReturn(SB), NOSPLIT, $0-24
+    MOVQ    ptr+0(FP), BX
+    MOVQ    val+8(FP), CX
+casloop_or64_relaxed:
+    MOVQ    CX, DX
+    MOVQ    (BX), AX
+    ORQ     AX, DX
+    LOCK
+    CMPXCHGQ    DX, (BX)
+    JNZ     casloop_or64_relaxed
+    MOVQ    AX, ret+16(FP)
+    RET
+
+TEXT ·orUint64RelaxedReturn(SB), NOSPLIT, $0-24
+    MOVQ    ptr+0(FP), BX
+    MOVQ    val+8(FP), CX
+casloop_or64_relaxed_u:
+    MOVQ    CX, DX
+    MOVQ    (BX), AX
+    ORQ     AX, DX
+    LOCK
+    CMPXCHGQ    DX, (BX)
+    JNZ     casloop_or64_relaxed_u
+    MOVQ    AX, ret+16(FP)
+    RET
+
+TEXT ·orUintptrRelaxedReturn(SB), NOSPLIT, $0-24
+    JMP     ·orUint64RelaxedReturn(SB)
+
+// ============================================================
+// OR Acquire
+// ============================================================
+
+TEXT ·orInt32AcquireReturn(SB), NOSPLIT, $0-20
+    MOVQ    ptr+0(FP), BX
+    MOVL    val+8(FP), CX
+casloop_or32_acquire:
+    MOVL    CX, DX
+    MOVL    (BX), AX
+    ORL     AX, DX
+    LOCK
+    CMPXCHGL    DX, (BX)
+    JNZ     casloop_or32_acquire
+    LFENCE
+    MOVL    AX, ret+16(FP)
+    RET
+
+TEXT ·orUint32AcquireReturn(SB), NOSPLIT, $0-20
+    MOVQ    ptr+0(FP), BX
+    MOVL    val+8(FP), CX
+casloop_or32_acquire_u:
+    MOVL    CX, DX
+    MOVL    (BX), AX
+    ORL     AX, DX
+    LOCK
+    CMPXCHGL    DX, (BX)
+    JNZ     casloop_or32_acquire_u
+    LFENCE
+    MOVL    AX, ret+16(FP)
+    RET
+
+TEXT ·orInt64AcquireReturn(SB), NOSPLIT, $0-24
+    MOVQ    ptr+0(FP), BX
+    MOVQ    val+8(FP), CX
+casloop_or64_acquire:
+    MOVQ    CX, DX
+    MOVQ    (BX), AX
+    ORQ     AX, DX
+    LOCK
+    CMPXCHGQ    DX, (BX)
+    JNZ     casloop_or64_acquire
+    LFENCE
+    MOVQ    AX, ret+16(FP)
+    RET
+
+TEXT ·orUint64AcquireReturn(SB), NOSPLIT, $0-24
+    MOVQ    ptr+0(FP), BX
+    MOVQ    val+8(FP), CX
+casloop_or64_acquire_u:
+    MOVQ    CX, DX
+    MOVQ    (BX), AX
+    ORQ     AX, DX
+    LOCK
+    CMPXCHGQ    DX, (BX)
+    JNZ     casloop_or64_acquire_u
+    LFENCE
+    MOVQ    AX, ret+16(FP)
+    RET
+
+TEXT ·orUintptrAcquireReturn(SB), NOSPLIT, $0-24
+    JMP     ·orUint64AcquireReturn(SB)
+
+// ============================================================
+// OR Release
+// ============================================================
+
+TEXT ·orInt32ReleaseReturn(SB), NOSPLIT, $0-20
+    MOVQ    ptr+0(FP), BX
+    MOVL    val+8(FP), CX
+    SFENCE
+casloop_or32_release:
+    MOVL    CX, DX
+    MOVL    (BX), AX
+    ORL     AX, DX
+    LOCK
+    CMPXCHGL    DX, (BX)
+    JNZ     casloop_or32_release
+    MOVL    AX, ret+16(FP)
+    RET
+
+TEXT ·orUint32ReleaseReturn(SB), NOSPLIT, $0-20
+    MOVQ    ptr+0(FP), BX
+    MOVL    val+8(FP), CX
+    SFENCE
+casloop_or32_release_u:
+    MOVL    CX, DX
+    MOVL    (BX), AX
+    ORL     AX, DX
+    LOCK
+    CMPXCHGL    DX, (BX)
+    JNZ     casloop_or32_release_u
+    MOVL    AX, ret+16(FP)
+    RET
+
+TEXT ·orInt64ReleaseReturn(SB), NOSPLIT, $0-24
+    MOVQ    ptr+0(FP), BX
+    MOVQ    val+8(FP), CX
+    SFENCE
+casloop_or64_release:
+    MOVQ    CX, DX
+    MOVQ    (BX), AX
+    ORQ     AX, DX
+    LOCK
+    CMPXCHGQ    DX, (BX)
+    JNZ     casloop_or64_release
+    MOVQ    AX, ret+16(FP)
+    RET
+
+TEXT ·orUint64ReleaseReturn(SB), NOSPLIT, $0-24
+    MOVQ    ptr+0(FP), BX
+    MOVQ    val+8(FP), CX
+    SFENCE
+casloop_or64_release_u:
+    MOVQ    CX, DX
+    MOVQ    (BX), AX
+    ORQ     AX, DX
+    LOCK
+    CMPXCHGQ    DX, (BX)
+    JNZ     casloop_or64_release_u
+    MOVQ    AX, ret+16(FP)
+    RET
+
+TEXT ·orUintptrReleaseReturn(SB), NOSPLIT, $0-24
+    JMP     ·orUint64ReleaseReturn(SB)
+
+// ============================================================
+// OR AcqRel
+// ============================================================
+
+TEXT ·orInt32AcqRelReturn(SB), NOSPLIT, $0-20
+    MOVQ    ptr+0(FP), BX
+    MOVL    val+8(FP), CX
+    MFENCE
+casloop_or32_acqrel:
+    MOVL    CX, DX
+    MOVL    (BX), AX
+    ORL     AX, DX
+    LOCK
+    CMPXCHGL    DX, (BX)
+    JNZ     casloop_or32_acqrel
+    MFENCE
+    MOVL    AX, ret+16(FP)
+    RET
+
+TEXT ·orUint32AcqRelReturn(SB), NOSPLIT, $0-20
+    MOVQ    ptr+0(FP), BX
+    MOVL    val+8(FP), CX
+    MFENCE
+casloop_or32_acqrel_u:
+    MOVL    CX, DX
+    MOVL    (BX), AX
+    ORL     AX, DX
+    LOCK
+    CMPXCHGL    DX, (BX)
+    JNZ     casloop_or32_acqrel_u
+    MFENCE
+    MOVL    AX, ret+16(FP)
+    RET
+
+TEXT ·orInt64AcqRelReturn(SB), NOSPLIT, $0-24
+    MOVQ    ptr+0(FP), BX
+    MOVQ    val+8(FP), CX
+    MFENCE
+casloop_or64_acqrel:
+    MOVQ    CX, DX
+    MOVQ    (BX), AX
+    ORQ     AX, DX
+    LOCK
+    CMPXCHGQ    DX, (BX)
+    JNZ     casloop_or64_acqrel
+    MFENCE
+    MOVQ    AX, ret+16(FP)
+    RET
+
+TEXT ·orUint64AcqRelReturn(SB), NOSPLIT, $0-24
+    MOVQ    ptr+0(FP), BX
+    MOVQ    val+8(FP), CX
+    MFENCE
+casloop_or64_acqrel_u:
+    MOVQ    CX, DX
+    MOVQ    (BX), AX
+    ORQ     AX, DX
+    LOCK
+    CMPXCHGQ    DX, (BX)
+    JNZ     casloop_or64_acqrel_u
+    MFENCE
+    MOVQ    AX, ret+16(FP)
+    RET
+
+TEXT ·orUintptrAcqRelReturn(SB), NOSPLIT, $0-24
+    JMP     ·orUint64AcqRelReturn(SB)
+
+// ============================================================
+// OR SeqCst
+// ============================================================
+
+TEXT ·orInt32SeqCstReturn(SB), NOSPLIT, $0-20
+    MOVQ    ptr+0(FP), BX
+    MOVL    val+8(FP), CX
+    MFENCE
+casloop_or32_seqcst:
+    MOVL    CX, DX
+    MOVL    (BX), AX
+    ORL     AX, DX
+    LOCK
+    CMPXCHGL    DX, (BX)
+    JNZ     casloop_or32_seqcst
+    MFENCE
+    MOVL    AX, ret+16(FP)
+    RET
+
+TEXT ·orUint32SeqCstReturn(SB), NOSPLIT, $0-20
+    MOVQ    ptr+0(FP), BX
+    MOVL    val+8(FP), CX
+    MFENCE
+casloop_or32_seqcst_u:
+    MOVL    CX, DX
+    MOVL    (BX), AX
+    ORL     AX, DX
+    LOCK
+    CMPXCHGL    DX, (BX)
+    JNZ     casloop_or32_seqcst_u
+    MFENCE
+    MOVL    AX, ret+16(FP)
+    RET
+
+TEXT ·orInt64SeqCstReturn(SB), NOSPLIT, $0-24
+    MOVQ    ptr+0(FP), BX
+    MOVQ    val+8(FP), CX
+    MFENCE
+casloop_or64_seqcst:
+    MOVQ    CX, DX
+    MOVQ    (BX), AX
+    ORQ     AX, DX
+    LOCK
+    CMPXCHGQ    DX, (BX)
+    JNZ     casloop_or64_seqcst
+    MFENCE
+    MOVQ    AX, ret+16(FP)
+    RET
+
+TEXT ·orUint64SeqCstReturn(SB), NOSPLIT, $0-24
+    MOVQ    ptr+0(FP), BX
+    MOVQ    val+8(FP), CX
+    MFENCE
+casloop_or64_seqcst_u:
+    MOVQ    CX, DX
+    MOVQ    (BX), AX
+    ORQ     AX, DX
+    LOCK
+    CMPXCHGQ    DX, (BX)
+    JNZ     casloop_or64_seqcst_u
+    MFENCE
+    MOVQ    AX, ret+16(FP)
+    RET
+
+TEXT ·orUintptrSeqCstReturn(SB), NOSPLIT, $0-24
+    JMP     ·orUint64SeqCstReturn(SB)
+
+// ============================================================
+// AND operations with return value (old value)
+// ============================================================
+
+// ============================================================
+// AND Relaxed
+// ============================================================
+
+TEXT ·andInt32RelaxedReturn(SB), NOSPLIT, $0-20
+    MOVQ    ptr+0(FP), BX
+    MOVL    val+8(FP), CX
+casloop_and32_relaxed:
+    MOVL    CX, DX
+    MOVL    (BX), AX
+    ANDL    AX, DX
+    LOCK
+    CMPXCHGL    DX, (BX)
+    JNZ     casloop_and32_relaxed
+    MOVL    AX, ret+16(FP)
+    RET
+
+TEXT ·andUint32RelaxedReturn(SB), NOSPLIT, $0-20
+    MOVQ    ptr+0(FP), BX
+    MOVL    val+8(FP), CX
+casloop_and32_relaxed_u:
+    MOVL    CX, DX
+    MOVL    (BX), AX
+    ANDL    AX, DX
+    LOCK
+    CMPXCHGL    DX, (BX)
+    JNZ     casloop_and32_relaxed_u
+    MOVL    AX, ret+16(FP)
+    RET
+
+TEXT ·andInt64RelaxedReturn(SB), NOSPLIT, $0-24
+    MOVQ    ptr+0(FP), BX
+    MOVQ    val+8(FP), CX
+casloop_and64_relaxed:
+    MOVQ    CX, DX
+    MOVQ    (BX), AX
+    ANDQ    AX, DX
+    LOCK
+    CMPXCHGQ    DX, (BX)
+    JNZ     casloop_and64_relaxed
+    MOVQ    AX, ret+16(FP)
+    RET
+
+TEXT ·andUint64RelaxedReturn(SB), NOSPLIT, $0-24
+    MOVQ    ptr+0(FP), BX
+    MOVQ    val+8(FP), CX
+casloop_and64_relaxed_u:
+    MOVQ    CX, DX
+    MOVQ    (BX), AX
+    ANDQ    AX, DX
+    LOCK
+    CMPXCHGQ    DX, (BX)
+    JNZ     casloop_and64_relaxed_u
+    MOVQ    AX, ret+16(FP)
+    RET
+
+TEXT ·andUintptrRelaxedReturn(SB), NOSPLIT, $0-24
+    JMP     ·andUint64RelaxedReturn(SB)
+
+// ============================================================
+// AND Acquire
+// ============================================================
+
+TEXT ·andInt32AcquireReturn(SB), NOSPLIT, $0-20
+    MOVQ    ptr+0(FP), BX
+    MOVL    val+8(FP), CX
+casloop_and32_acquire:
+    MOVL    CX, DX
+    MOVL    (BX), AX
+    ANDL    AX, DX
+    LOCK
+    CMPXCHGL    DX, (BX)
+    JNZ     casloop_and32_acquire
+    LFENCE
+    MOVL    AX, ret+16(FP)
+    RET
+
+TEXT ·andUint32AcquireReturn(SB), NOSPLIT, $0-20
+    MOVQ    ptr+0(FP), BX
+    MOVL    val+8(FP), CX
+casloop_and32_acquire_u:
+    MOVL    CX, DX
+    MOVL    (BX), AX
+    ANDL    AX, DX
+    LOCK
+    CMPXCHGL    DX, (BX)
+    JNZ     casloop_and32_acquire_u
+    LFENCE
+    MOVL    AX, ret+16(FP)
+    RET
+
+TEXT ·andInt64AcquireReturn(SB), NOSPLIT, $0-24
+    MOVQ    ptr+0(FP), BX
+    MOVQ    val+8(FP), CX
+casloop_and64_acquire:
+    MOVQ    CX, DX
+    MOVQ    (BX), AX
+    ANDQ    AX, DX
+    LOCK
+    CMPXCHGQ    DX, (BX)
+    JNZ     casloop_and64_acquire
+    LFENCE
+    MOVQ    AX, ret+16(FP)
+    RET
+
+TEXT ·andUint64AcquireReturn(SB), NOSPLIT, $0-24
+    MOVQ    ptr+0(FP), BX
+    MOVQ    val+8(FP), CX
+casloop_and64_acquire_u:
+    MOVQ    CX, DX
+    MOVQ    (BX), AX
+    ANDQ    AX, DX
+    LOCK
+    CMPXCHGQ    DX, (BX)
+    JNZ     casloop_and64_acquire_u
+    LFENCE
+    MOVQ    AX, ret+16(FP)
+    RET
+
+TEXT ·andUintptrAcquireReturn(SB), NOSPLIT, $0-24
+    JMP     ·andUint64AcquireReturn(SB)
+
+// ============================================================
+// AND Release
+// ============================================================
+
+TEXT ·andInt32ReleaseReturn(SB), NOSPLIT, $0-20
+    MOVQ    ptr+0(FP), BX
+    MOVL    val+8(FP), CX
+    SFENCE
+casloop_and32_release:
+    MOVL    CX, DX
+    MOVL    (BX), AX
+    ANDL    AX, DX
+    LOCK
+    CMPXCHGL    DX, (BX)
+    JNZ     casloop_and32_release
+    MOVL    AX, ret+16(FP)
+    RET
+
+TEXT ·andUint32ReleaseReturn(SB), NOSPLIT, $0-20
+    MOVQ    ptr+0(FP), BX
+    MOVL    val+8(FP), CX
+    SFENCE
+casloop_and32_release_u:
+    MOVL    CX, DX
+    MOVL    (BX), AX
+    ANDL    AX, DX
+    LOCK
+    CMPXCHGL    DX, (BX)
+    JNZ     casloop_and32_release_u
+    MOVL    AX, ret+16(FP)
+    RET
+
+TEXT ·andInt64ReleaseReturn(SB), NOSPLIT, $0-24
+    MOVQ    ptr+0(FP), BX
+    MOVQ    val+8(FP), CX
+    SFENCE
+casloop_and64_release:
+    MOVQ    CX, DX
+    MOVQ    (BX), AX
+    ANDQ    AX, DX
+    LOCK
+    CMPXCHGQ    DX, (BX)
+    JNZ     casloop_and64_release
+    MOVQ    AX, ret+16(FP)
+    RET
+
+TEXT ·andUint64ReleaseReturn(SB), NOSPLIT, $0-24
+    MOVQ    ptr+0(FP), BX
+    MOVQ    val+8(FP), CX
+    SFENCE
+casloop_and64_release_u:
+    MOVQ    CX, DX
+    MOVQ    (BX), AX
+    ANDQ    AX, DX
+    LOCK
+    CMPXCHGQ    DX, (BX)
+    JNZ     casloop_and64_release_u
+    MOVQ    AX, ret+16(FP)
+    RET
+
+TEXT ·andUintptrReleaseReturn(SB), NOSPLIT, $0-24
+    JMP     ·andUint64ReleaseReturn(SB)
+
+// ============================================================
+// AND AcqRel
+// ============================================================
+
+TEXT ·andInt32AcqRelReturn(SB), NOSPLIT, $0-20
     MOVQ    ptr+0(FP), BX
     MOVL    val+8(FP), CX
     MFENCE
@@ -1408,8 +1979,22 @@ casloop_and32_acqrel:
     MOVL    AX, ret+16(FP)
     RET
 
-// and64AcqRel full brarrier with old value return
-TEXT ·and64AcqRel(SB), NOSPLIT, $0-24
+TEXT ·andUint32AcqRelReturn(SB), NOSPLIT, $0-20
+    MOVQ    ptr+0(FP), BX
+    MOVL    val+8(FP), CX
+    MFENCE
+casloop_and32_acqrel_u:
+    MOVL    CX, DX
+    MOVL    (BX), AX
+    ANDL    AX, DX
+    LOCK
+    CMPXCHGL    DX, (BX)
+    JNZ     casloop_and32_acqrel_u
+    MFENCE
+    MOVL    AX, ret+16(FP)
+    RET
+
+TEXT ·andInt64AcqRelReturn(SB), NOSPLIT, $0-24
     MOVQ    ptr+0(FP), BX
     MOVQ    val+8(FP), CX
     MFENCE
@@ -1423,3 +2008,88 @@ casloop_and64_acqrel:
     MFENCE
     MOVQ    AX, ret+16(FP)
     RET
+
+TEXT ·andUint64AcqRelReturn(SB), NOSPLIT, $0-24
+    MOVQ    ptr+0(FP), BX
+    MOVQ    val+8(FP), CX
+    MFENCE
+casloop_and64_acqrel_u:
+    MOVQ    CX, DX
+    MOVQ    (BX), AX
+    ANDQ    AX, DX
+    LOCK
+    CMPXCHGQ    DX, (BX)
+    JNZ     casloop_and64_acqrel_u
+    MFENCE
+    MOVQ    AX, ret+16(FP)
+    RET
+
+TEXT ·andUintptrAcqRelReturn(SB), NOSPLIT, $0-24
+    JMP     ·andUint64AcqRelReturn(SB)
+
+// ============================================================
+// AND SeqCst
+// ============================================================
+
+TEXT ·andInt32SeqCstReturn(SB), NOSPLIT, $0-20
+    MOVQ    ptr+0(FP), BX
+    MOVL    val+8(FP), CX
+    MFENCE
+casloop_and32_seqcst:
+    MOVL    CX, DX
+    MOVL    (BX), AX
+    ANDL    AX, DX
+    LOCK
+    CMPXCHGL    DX, (BX)
+    JNZ     casloop_and32_seqcst
+    MFENCE
+    MOVL    AX, ret+16(FP)
+    RET
+
+TEXT ·andUint32SeqCstReturn(SB), NOSPLIT, $0-20
+    MOVQ    ptr+0(FP), BX
+    MOVL    val+8(FP), CX
+    MFENCE
+casloop_and32_seqcst_u:
+    MOVL    CX, DX
+    MOVL    (BX), AX
+    ANDL    AX, DX
+    LOCK
+    CMPXCHGL    DX, (BX)
+    JNZ     casloop_and32_seqcst_u
+    MFENCE
+    MOVL    AX, ret+16(FP)
+    RET
+
+TEXT ·andInt64SeqCstReturn(SB), NOSPLIT, $0-24
+    MOVQ    ptr+0(FP), BX
+    MOVQ    val+8(FP), CX
+    MFENCE
+casloop_and64_seqcst:
+    MOVQ    CX, DX
+    MOVQ    (BX), AX
+    ANDQ    AX, DX
+    LOCK
+    CMPXCHGQ    DX, (BX)
+    JNZ     casloop_and64_seqcst
+    MFENCE
+    MOVQ    AX, ret+16(FP)
+    RET
+
+TEXT ·andUint64SeqCstReturn(SB), NOSPLIT, $0-24
+    MOVQ    ptr+0(FP), BX
+    MOVQ    val+8(FP), CX
+    MFENCE
+casloop_and64_seqcst_u:
+    MOVQ    CX, DX
+    MOVQ    (BX), AX
+    ANDQ    AX, DX
+    LOCK
+    CMPXCHGQ    DX, (BX)
+    JNZ     casloop_and64_seqcst_u
+    MFENCE
+    MOVQ    AX, ret+16(FP)
+    RET
+
+TEXT ·andUintptrSeqCstReturn(SB), NOSPLIT, $0-24
+    JMP     ·andUint64SeqCstReturn(SB)

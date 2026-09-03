@@ -34,8 +34,12 @@ func (relaxed) store() {}
 func (release) store() {}
 func (seqCst) store()  {}
 
-func (acqRel) noret() {}
-func (acqRel) ret()   {}
+func (relaxed) noret() {}
+func (acquire) noret() {}
+func (release) noret() {}
+func (seqCst) noret()  {}
+
+func (acqRel) ret() {}
 
 func (relaxed) all() {}
 func (acquire) all() {}

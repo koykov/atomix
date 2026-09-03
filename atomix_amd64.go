@@ -690,6 +690,33 @@ func orUint64Release(addr *uint64, val uint64)
 //go:noinline
 func orUintptrRelease(addr *uintptr, val uintptr)
 
+// AcqRel
+
+//go:noescape
+//go:nosplit
+//go:noinline
+func orInt32AcqRel(addr *int32, val int32)
+
+//go:noescape
+//go:nosplit
+//go:noinline
+func orUint32AcqRel(addr *uint32, val uint32)
+
+//go:noescape
+//go:nosplit
+//go:noinline
+func orInt64AcqRel(addr *int64, val int64)
+
+//go:noescape
+//go:nosplit
+//go:noinline
+func orUint64AcqRel(addr *uint64, val uint64)
+
+//go:noescape
+//go:nosplit
+//go:noinline
+func orUintptrAcqRel(addr *uintptr, val uintptr)
+
 // SeqCst
 
 //go:noescape
@@ -716,18 +743,6 @@ func orUint64SeqCst(addr *uint64, val uint64)
 //go:nosplit
 //go:noinline
 func orUintptrSeqCst(addr *uintptr, val uintptr)
-
-// or return: AcqRel (full barrier)
-
-//go:noescape
-//go:nosplit
-//go:noinline
-func or32AcqRel(addr *uint32, val uint32) uint32
-
-//go:noescape
-//go:nosplit
-//go:noinline
-func or64AcqRel(addr *uint64, val uint64) uint64
 
 // ============================================================
 // BITWISE AND operations
@@ -815,6 +830,33 @@ func andUint64Release(addr *uint64, val uint64)
 //go:noinline
 func andUintptrRelease(addr *uintptr, val uintptr)
 
+// AcqRel
+
+//go:noescape
+//go:nosplit
+//go:noinline
+func andInt32AcqRel(addr *int32, val int32)
+
+//go:noescape
+//go:nosplit
+//go:noinline
+func andUint32AcqRel(addr *uint32, val uint32)
+
+//go:noescape
+//go:nosplit
+//go:noinline
+func andInt64AcqRel(addr *int64, val int64)
+
+//go:noescape
+//go:nosplit
+//go:noinline
+func andUint64AcqRel(addr *uint64, val uint64)
+
+//go:noescape
+//go:nosplit
+//go:noinline
+func andUintptrAcqRel(addr *uintptr, val uintptr)
+
 // SeqCst
 
 //go:noescape
@@ -842,14 +884,282 @@ func andUint64SeqCst(addr *uint64, val uint64)
 //go:noinline
 func andUintptrSeqCst(addr *uintptr, val uintptr)
 
-// And with return value: AcqRel (full barrier)
+// ============================================================
+// BITWISE OR operations
+// ============================================================
+
+// Or: Relaxed, Acquire, Release, AcqRel, SeqCst
+// Relaxed
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func and32AcqRel(addr *uint32, val uint32) uint32
+func orInt32RelaxedReturn(addr *int32, val int32) int32
 
 //go:noescape
 //go:nosplit
 //go:noinline
-func and64AcqRel(addr *uint64, val uint64) uint64
+func orUint32RelaxedReturn(addr *uint32, val uint32) uint32
+
+//go:noescape
+//go:nosplit
+//go:noinline
+func orInt64RelaxedReturn(addr *int64, val int64) int64
+
+//go:noescape
+//go:nosplit
+//go:noinline
+func orUint64RelaxedReturn(addr *uint64, val uint64) uint64
+
+//go:noescape
+//go:nosplit
+//go:noinline
+func orUintptrRelaxedReturn(addr *uintptr, val uintptr) uintptr
+
+// Acquire
+
+//go:noescape
+//go:nosplit
+//go:noinline
+func orInt32AcquireReturn(addr *int32, val int32) int32
+
+//go:noescape
+//go:nosplit
+//go:noinline
+func orUint32AcquireReturn(addr *uint32, val uint32) uint32
+
+//go:noescape
+//go:nosplit
+//go:noinline
+func orInt64AcquireReturn(addr *int64, val int64) int64
+
+//go:noescape
+//go:nosplit
+//go:noinline
+func orUint64AcquireReturn(addr *uint64, val uint64) uint64
+
+//go:noescape
+//go:nosplit
+//go:noinline
+func orUintptrAcquireReturn(addr *uintptr, val uintptr) uintptr
+
+// Release
+
+//go:noescape
+//go:nosplit
+//go:noinline
+func orInt32ReleaseReturn(addr *int32, val int32) int32
+
+//go:noescape
+//go:nosplit
+//go:noinline
+func orUint32ReleaseReturn(addr *uint32, val uint32) uint32
+
+//go:noescape
+//go:nosplit
+//go:noinline
+func orInt64ReleaseReturn(addr *int64, val int64) int64
+
+//go:noescape
+//go:nosplit
+//go:noinline
+func orUint64ReleaseReturn(addr *uint64, val uint64) uint64
+
+//go:noescape
+//go:nosplit
+//go:noinline
+func orUintptrReleaseReturn(addr *uintptr, val uintptr) uintptr
+
+// AcqRel
+
+//go:noescape
+//go:nosplit
+//go:noinline
+func orInt32AcqRelReturn(addr *int32, val int32) int32
+
+//go:noescape
+//go:nosplit
+//go:noinline
+func orUint32AcqRelReturn(addr *uint32, val uint32) uint32
+
+//go:noescape
+//go:nosplit
+//go:noinline
+func orInt64AcqRelReturn(addr *int64, val int64) int64
+
+//go:noescape
+//go:nosplit
+//go:noinline
+func orUint64AcqRelReturn(addr *uint64, val uint64) uint64
+
+//go:noescape
+//go:nosplit
+//go:noinline
+func orUintptrAcqRelReturn(addr *uintptr, val uintptr) uintptr
+
+// SeqCst
+
+//go:noescape
+//go:nosplit
+//go:noinline
+func orInt32SeqCstReturn(addr *int32, val int32) int32
+
+//go:noescape
+//go:nosplit
+//go:noinline
+func orUint32SeqCstReturn(addr *uint32, val uint32) uint32
+
+//go:noescape
+//go:nosplit
+//go:noinline
+func orInt64SeqCstReturn(addr *int64, val int64) int64
+
+//go:noescape
+//go:nosplit
+//go:noinline
+func orUint64SeqCstReturn(addr *uint64, val uint64) uint64
+
+//go:noescape
+//go:nosplit
+//go:noinline
+func orUintptrSeqCstReturn(addr *uintptr, val uintptr) uintptr
+
+// ============================================================
+// BITWISE AND operations
+// ============================================================
+
+// And: Relaxed, Acquire, Release, AcqRel, SeqCst
+// Relaxed
+
+//go:noescape
+//go:nosplit
+//go:noinline
+func andInt32RelaxedReturn(addr *int32, val int32) int32
+
+//go:noescape
+//go:nosplit
+//go:noinline
+func andUint32RelaxedReturn(addr *uint32, val uint32) uint32
+
+//go:noescape
+//go:nosplit
+//go:noinline
+func andInt64RelaxedReturn(addr *int64, val int64) int64
+
+//go:noescape
+//go:nosplit
+//go:noinline
+func andUint64RelaxedReturn(addr *uint64, val uint64) uint64
+
+//go:noescape
+//go:nosplit
+//go:noinline
+func andUintptrRelaxedReturn(addr *uintptr, val uintptr) uintptr
+
+// Acquire
+
+//go:noescape
+//go:nosplit
+//go:noinline
+func andInt32AcquireReturn(addr *int32, val int32) int32
+
+//go:noescape
+//go:nosplit
+//go:noinline
+func andUint32AcquireReturn(addr *uint32, val uint32) uint32
+
+//go:noescape
+//go:nosplit
+//go:noinline
+func andInt64AcquireReturn(addr *int64, val int64) int64
+
+//go:noescape
+//go:nosplit
+//go:noinline
+func andUint64AcquireReturn(addr *uint64, val uint64) uint64
+
+//go:noescape
+//go:nosplit
+//go:noinline
+func andUintptrAcquireReturn(addr *uintptr, val uintptr) uintptr
+
+// Release
+
+//go:noescape
+//go:nosplit
+//go:noinline
+func andInt32ReleaseReturn(addr *int32, val int32) int32
+
+//go:noescape
+//go:nosplit
+//go:noinline
+func andUint32ReleaseReturn(addr *uint32, val uint32) uint32
+
+//go:noescape
+//go:nosplit
+//go:noinline
+func andInt64ReleaseReturn(addr *int64, val int64) int64
+
+//go:noescape
+//go:nosplit
+//go:noinline
+func andUint64ReleaseReturn(addr *uint64, val uint64) uint64
+
+//go:noescape
+//go:nosplit
+//go:noinline
+func andUintptrReleaseReturn(addr *uintptr, val uintptr) uintptr
+
+// AcqRel
+
+//go:noescape
+//go:nosplit
+//go:noinline
+func andInt32AcqRelReturn(addr *int32, val int32) int32
+
+//go:noescape
+//go:nosplit
+//go:noinline
+func andUint32AcqRelReturn(addr *uint32, val uint32) uint32
+
+//go:noescape
+//go:nosplit
+//go:noinline
+func andInt64AcqRelReturn(addr *int64, val int64) int64
+
+//go:noescape
+//go:nosplit
+//go:noinline
+func andUint64AcqRelReturn(addr *uint64, val uint64) uint64
+
+//go:noescape
+//go:nosplit
+//go:noinline
+func andUintptrAcqRelReturn(addr *uintptr, val uintptr) uintptr
+
+// SeqCst
+
+//go:noescape
+//go:nosplit
+//go:noinline
+func andInt32SeqCstReturn(addr *int32, val int32) int32
+
+//go:noescape
+//go:nosplit
+//go:noinline
+func andUint32SeqCstReturn(addr *uint32, val uint32) uint32
+
+//go:noescape
+//go:nosplit
+//go:noinline
+func andInt64SeqCstReturn(addr *int64, val int64) int64
+
+//go:noescape
+//go:nosplit
+//go:noinline
+func andUint64SeqCstReturn(addr *uint64, val uint64) uint64
+
+//go:noescape
+//go:nosplit
+//go:noinline
+func andUintptrSeqCstReturn(addr *uintptr, val uintptr) uintptr
