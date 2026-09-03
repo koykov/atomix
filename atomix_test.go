@@ -1017,3 +1017,150 @@ func TestAnd(t *testing.T) {
 		t.Run("seq cst", func(t *testing.T) { testfn(t, MemoryOrderSeqCst) })
 	})
 }
+
+func TestOr(t *testing.T) {
+	t.Run("int32", func(t *testing.T) {
+		testfn := func(t *testing.T, order MemoryOrderAll) {
+			var x struct {
+				before int32
+				i      int32
+				after  int32
+			}
+			x.before = magic32
+			x.after = magic32
+			var j int32
+			for mask := int32(1); mask != 0; mask <<= 1 {
+				old := x.i
+				k := OrInt32(&x.i, mask, order)
+				j |= mask
+				if x.i != j || k != old {
+					t.Fatalf("mask=%d i=%d j=%d k=%d old=%d", mask, x.i, j, k, old)
+				}
+			}
+			if x.before != magic32 || x.after != magic32 {
+				t.Fatalf("wrong magic: %#x _ %#x != %#x _ %#x", x.before, x.after, magic32, magic32)
+			}
+		}
+		t.Run("relaxed", func(t *testing.T) { testfn(t, MemoryOrderRelaxed) })
+		t.Run("acquire", func(t *testing.T) { testfn(t, MemoryOrderAcquire) })
+		t.Run("release", func(t *testing.T) { testfn(t, MemoryOrderRelease) })
+		t.Run("acq rel", func(t *testing.T) { testfn(t, MemoryOrderAcqRel) })
+		t.Run("seq cst", func(t *testing.T) { testfn(t, MemoryOrderSeqCst) })
+	})
+	t.Run("uint32", func(t *testing.T) {
+		testfn := func(t *testing.T, order MemoryOrderAll) {
+			var x struct {
+				before uint32
+				i      uint32
+				after  uint32
+			}
+			x.before = magic32
+			x.after = magic32
+			var j uint32
+			for mask := uint32(1); mask != 0; mask <<= 1 {
+				old := x.i
+				k := OrUint32(&x.i, mask, order)
+				j |= mask
+				if x.i != j || k != old {
+					t.Fatalf("mask=%d i=%d j=%d k=%d old=%d", mask, x.i, j, k, old)
+				}
+			}
+			if x.before != magic32 || x.after != magic32 {
+				t.Fatalf("wrong magic: %#x _ %#x != %#x _ %#x", x.before, x.after, magic32, magic32)
+			}
+		}
+		t.Run("relaxed", func(t *testing.T) { testfn(t, MemoryOrderRelaxed) })
+		t.Run("acquire", func(t *testing.T) { testfn(t, MemoryOrderAcquire) })
+		t.Run("release", func(t *testing.T) { testfn(t, MemoryOrderRelease) })
+		t.Run("acq rel", func(t *testing.T) { testfn(t, MemoryOrderAcqRel) })
+		t.Run("seq cst", func(t *testing.T) { testfn(t, MemoryOrderSeqCst) })
+	})
+	t.Run("int64", func(t *testing.T) {
+		testfn := func(t *testing.T, order MemoryOrderAll) {
+			var x struct {
+				before int64
+				i      int64
+				after  int64
+			}
+			magic64 := int64(magic64)
+			x.before = magic64
+			x.after = magic64
+			var j int64
+			for mask := int64(1); mask != 0; mask <<= 1 {
+				old := x.i
+				k := OrInt64(&x.i, mask, order)
+				j |= mask
+				if x.i != j || k != old {
+					t.Fatalf("mask=%d i=%d j=%d k=%d old=%d", mask, x.i, j, k, old)
+				}
+			}
+			if x.before != magic64 || x.after != magic64 {
+				t.Fatalf("wrong magic: %#x _ %#x != %#x _ %#x", x.before, x.after, magic64, magic64)
+			}
+		}
+		t.Run("relaxed", func(t *testing.T) { testfn(t, MemoryOrderRelaxed) })
+		t.Run("acquire", func(t *testing.T) { testfn(t, MemoryOrderAcquire) })
+		t.Run("release", func(t *testing.T) { testfn(t, MemoryOrderRelease) })
+		t.Run("acq rel", func(t *testing.T) { testfn(t, MemoryOrderAcqRel) })
+		t.Run("seq cst", func(t *testing.T) { testfn(t, MemoryOrderSeqCst) })
+	})
+	t.Run("uint64", func(t *testing.T) {
+		testfn := func(t *testing.T, order MemoryOrderAll) {
+			var x struct {
+				before uint64
+				i      uint64
+				after  uint64
+			}
+			magic64 := uint64(magic64)
+			x.before = magic64
+			x.after = magic64
+			var j uint64
+			for mask := uint64(1); mask != 0; mask <<= 1 {
+				old := x.i
+				k := OrUint64(&x.i, mask, order)
+				j |= mask
+				if x.i != j || k != old {
+					t.Fatalf("mask=%d i=%d j=%d k=%d old=%d", mask, x.i, j, k, old)
+				}
+			}
+			if x.before != magic64 || x.after != magic64 {
+				t.Fatalf("wrong magic: %#x _ %#x != %#x _ %#x", x.before, x.after, magic64, magic64)
+			}
+		}
+		t.Run("relaxed", func(t *testing.T) { testfn(t, MemoryOrderRelaxed) })
+		t.Run("acquire", func(t *testing.T) { testfn(t, MemoryOrderAcquire) })
+		t.Run("release", func(t *testing.T) { testfn(t, MemoryOrderRelease) })
+		t.Run("acq rel", func(t *testing.T) { testfn(t, MemoryOrderAcqRel) })
+		t.Run("seq cst", func(t *testing.T) { testfn(t, MemoryOrderSeqCst) })
+	})
+	t.Run("uintptr", func(t *testing.T) {
+		testfn := func(t *testing.T, order MemoryOrderAll) {
+			var x struct {
+				before uintptr
+				i      uintptr
+				after  uintptr
+			}
+			var m uint64 = magic64
+			magicptr := uintptr(m)
+			x.before = magicptr
+			x.after = magicptr
+			var j uintptr
+			for mask := uintptr(1); mask != 0; mask <<= 1 {
+				old := x.i
+				k := OrUintptr(&x.i, mask, order)
+				j |= mask
+				if x.i != j || k != old {
+					t.Fatalf("mask=%d i=%d j=%d k=%d old=%d", mask, x.i, j, k, old)
+				}
+			}
+			if x.before != magicptr || x.after != magicptr {
+				t.Fatalf("wrong magic: %#x _ %#x != %#x _ %#x", x.before, x.after, magicptr, magicptr)
+			}
+		}
+		t.Run("relaxed", func(t *testing.T) { testfn(t, MemoryOrderRelaxed) })
+		t.Run("acquire", func(t *testing.T) { testfn(t, MemoryOrderAcquire) })
+		t.Run("release", func(t *testing.T) { testfn(t, MemoryOrderRelease) })
+		t.Run("acq rel", func(t *testing.T) { testfn(t, MemoryOrderAcqRel) })
+		t.Run("seq cst", func(t *testing.T) { testfn(t, MemoryOrderSeqCst) })
+	})
+}
