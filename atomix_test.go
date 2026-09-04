@@ -1,6 +1,7 @@
 package atomix
 
 import (
+	"sync"
 	"testing"
 	"unsafe"
 )
@@ -1155,6 +1156,210 @@ func TestOr(t *testing.T) {
 			}
 			if x.before != magicptr || x.after != magicptr {
 				t.Fatalf("wrong magic: %#x _ %#x != %#x _ %#x", x.before, x.after, magicptr, magicptr)
+			}
+		}
+		t.Run("relaxed", func(t *testing.T) { testfn(t, MemoryOrderRelaxed) })
+		t.Run("acquire", func(t *testing.T) { testfn(t, MemoryOrderAcquire) })
+		t.Run("release", func(t *testing.T) { testfn(t, MemoryOrderRelease) })
+		t.Run("acq rel", func(t *testing.T) { testfn(t, MemoryOrderAcqRel) })
+		t.Run("seq cst", func(t *testing.T) { testfn(t, MemoryOrderSeqCst) })
+	})
+}
+
+func TestParallelLoad(t *testing.T) {
+	t.Run("int32", func(t *testing.T) {
+		testfn := func(t *testing.T, order MemoryOrderLoad) {
+			var x struct {
+				before int32
+				i      int32
+				after  int32
+			}
+			x.before = magic32
+			x.after = magic32
+
+			var wg sync.WaitGroup
+			iterations := 10000
+			goroutines := 10
+
+			for g := 0; g < goroutines; g++ {
+				wg.Add(1)
+				go func() {
+					defer wg.Done()
+					for n := 0; n < iterations; n++ {
+						_ = LoadInt32(&x.i, order)
+					}
+				}()
+			}
+			wg.Wait()
+
+			if x.before != magic32 || x.after != magic32 {
+				t.Fatalf("wrong magic: %#x _ %#x != %#x _ %#x", x.before, x.after, magic32, magic32)
+			}
+		}
+		t.Run("relaxed", func(t *testing.T) { testfn(t, MemoryOrderRelaxed) })
+		t.Run("acquire", func(t *testing.T) { testfn(t, MemoryOrderAcquire) })
+		t.Run("seq cst", func(t *testing.T) { testfn(t, MemoryOrderSeqCst) })
+	})
+}
+
+func TestParallelStore(t *testing.T) {
+	t.Run("int32", func(t *testing.T) {
+		testfn := func(t *testing.T, order MemoryOrderStore) {
+			var x struct {
+				before int32
+				i      int32
+				after  int32
+			}
+			x.before = magic32
+			x.after = magic32
+
+			var wg sync.WaitGroup
+			iterations := 10000
+			goroutines := 10
+
+			for g := 0; g < goroutines; g++ {
+				wg.Add(1)
+				go func(val int32) {
+					defer wg.Done()
+					for n := 0; n < iterations; n++ {
+						StoreInt32(&x.i, val, order)
+					}
+				}(int32(g))
+			}
+			wg.Wait()
+
+			if x.before != magic32 || x.after != magic32 {
+				t.Fatalf("wrong magic: %#x _ %#x != %#x _ %#x", x.before, x.after, magic32, magic32)
+			}
+		}
+		t.Run("relaxed", func(t *testing.T) { testfn(t, MemoryOrderRelaxed) })
+		t.Run("release", func(t *testing.T) { testfn(t, MemoryOrderRelease) })
+		t.Run("seq cst", func(t *testing.T) { testfn(t, MemoryOrderSeqCst) })
+	})
+}
+
+func TestParallelAdd(t *testing.T) {
+	t.Run("int32", func(t *testing.T) {
+		testfn := func(t *testing.T, order MemoryOrderAll) {
+			var x struct {
+				before int32
+				i      int32
+				after  int32
+			}
+			x.before = magic32
+			x.after = magic32
+
+			var wg sync.WaitGroup
+			iterations := 1000
+			goroutines := 10
+			expected := int32(0)
+
+			for g := 0; g < goroutines; g++ {
+				wg.Add(1)
+				go func(delta int32) {
+					defer wg.Done()
+					for n := 0; n < iterations; n++ {
+						AddInt32(&x.i, delta, order)
+					}
+				}(int32(g + 1))
+				expected += int32(g+1) * int32(iterations)
+			}
+			wg.Wait()
+
+			if x.i != expected {
+				t.Fatalf("i=%d expected=%d", x.i, expected)
+			}
+			if x.before != magic32 || x.after != magic32 {
+				t.Fatalf("wrong magic: %#x _ %#x != %#x _ %#x", x.before, x.after, magic32, magic32)
+			}
+		}
+		t.Run("relaxed", func(t *testing.T) { testfn(t, MemoryOrderRelaxed) })
+		t.Run("acquire", func(t *testing.T) { testfn(t, MemoryOrderAcquire) })
+		t.Run("release", func(t *testing.T) { testfn(t, MemoryOrderRelease) })
+		t.Run("acq rel", func(t *testing.T) { testfn(t, MemoryOrderAcqRel) })
+		t.Run("seq cst", func(t *testing.T) { testfn(t, MemoryOrderSeqCst) })
+	})
+}
+
+func TestParallelCAS(t *testing.T) {
+	t.Run("int32", func(t *testing.T) {
+		testfn := func(t *testing.T, order MemoryOrderAll) {
+			var x struct {
+				before int32
+				i      int32
+				after  int32
+			}
+			x.before = magic32
+			x.after = magic32
+			x.i = 0
+
+			var wg sync.WaitGroup
+			iterations := 1000
+			goroutines := 10
+			expected := int32(0)
+
+			for g := 0; g < goroutines; g++ {
+				wg.Add(1)
+				go func() {
+					defer wg.Done()
+					for n := 0; n < iterations; n++ {
+						for {
+							old := LoadInt32(&x.i, MemoryOrderRelaxed)
+							new := old + 1
+							if CompareAndSwapInt32(&x.i, old, new, order) {
+								break
+							}
+						}
+					}
+				}()
+				expected += int32(iterations)
+			}
+			wg.Wait()
+
+			if x.i != expected {
+				t.Fatalf("i=%d expected=%d", x.i, expected)
+			}
+			if x.before != magic32 || x.after != magic32 {
+				t.Fatalf("wrong magic: %#x _ %#x != %#x _ %#x", x.before, x.after, magic32, magic32)
+			}
+		}
+		t.Run("relaxed", func(t *testing.T) { testfn(t, MemoryOrderRelaxed) })
+		t.Run("acquire", func(t *testing.T) { testfn(t, MemoryOrderAcquire) })
+		t.Run("release", func(t *testing.T) { testfn(t, MemoryOrderRelease) })
+		t.Run("acq rel", func(t *testing.T) { testfn(t, MemoryOrderAcqRel) })
+		t.Run("seq cst", func(t *testing.T) { testfn(t, MemoryOrderSeqCst) })
+	})
+}
+
+func TestParallelSwap(t *testing.T) {
+	t.Run("int32", func(t *testing.T) {
+		testfn := func(t *testing.T, order MemoryOrderAll) {
+			var x struct {
+				before int32
+				i      int32
+				after  int32
+			}
+			x.before = magic32
+			x.after = magic32
+			x.i = 0
+
+			var wg sync.WaitGroup
+			iterations := 1000
+			goroutines := 10
+
+			for g := 0; g < goroutines; g++ {
+				wg.Add(1)
+				go func(val int32) {
+					defer wg.Done()
+					for n := 0; n < iterations; n++ {
+						SwapInt32(&x.i, val, order)
+					}
+				}(int32(g + 1))
+			}
+			wg.Wait()
+
+			if x.before != magic32 || x.after != magic32 {
+				t.Fatalf("wrong magic: %#x _ %#x != %#x _ %#x", x.before, x.after, magic32, magic32)
 			}
 		}
 		t.Run("relaxed", func(t *testing.T) { testfn(t, MemoryOrderRelaxed) })
